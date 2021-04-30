@@ -1,0 +1,19 @@
+img{
+    width:  100%;
+    max-width: 200px;
+}
+ul[class*="list"]{
+    background-color: #8BE5E2;
+}
+div{
+    height: 200px;
+    /* background-color: black; */
+}
+/* div:nth-last-child(2n)
+{
+    background-color: grey;
+} */
+.prenche{
+    height: 100%;
+    min-height: 500px;
+}

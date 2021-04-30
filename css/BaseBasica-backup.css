@@ -1,0 +1,165 @@
+html{
+    font-family: OpenSans, sans-serif;
+    background-color: #f0f2f5;
+}
+main{
+    display: flex;
+    padding: 25px;
+}
+nav{
+    border: none;
+    display: flex;
+    flex-direction: column;
+    background-color: #8BE5E2;
+    width:  100%;
+    max-width: 200px;
+    border-radius: 1em;
+    box-shadow: 0 0 0.5em grey;
+}
+form{
+    border: none;
+    width: 600px;
+    height: 300px;
+    flex: auto;
+    background-color: hsl(225, 24%, 81%);
+    border-radius: 0.3em;
+    box-shadow: 0 0 0.5em grey;
+    margin-left: 25px;
+    flex-direction: column;
+    height: 100%;
+}
+img{
+    width:  100%;
+    max-width: 200px;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 25px 0 25px;
+}
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.loginLabel{
+    text-align: center;
+}
+.barLabel{
+    font-weight: bolder;
+    background-color: #26A6A2; 
+    padding: 0 3%;
+}
+.barItem{
+    text-align: left;
+    white-space: none;
+    color: black;
+    text-decoration: none;
+    background-color: #8BE5E2;
+}
+ul{
+    padding: 0;
+    margin: 0;
+}
+li{
+    background-color: #8BE5E2;
+    list-style: none;
+}
+li:last-child, ul, a:last-child 
+{
+    border-radius: .3em;
+}
+label.barLabel{
+    border-radius: .3em .3em 0 0;
+}
+a{
+    display: flex;
+    padding: 3% 10%;
+}
+li:hover{
+    filter: brightness(95%);
+    cursor: pointer;
+}
+
+/*------------------------------- CSS DO FORM ----------------------------- */
+.formu{
+    margin: 1%;
+    padding: 1%;
+    background-color: #8ecae6;
+    border-radius: .5em;
+    display: flex;
+    flex-direction: column;
+}
+div[class*="fm"]{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.linha{
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: left;
+    flex-wrap: wrap;
+    padding: 5px;
+}
+input, select{
+    font-size: 1.7vmin;
+    font-weight: normal;
+    border-radius: 0.3em;
+    border: solid 1px;
+    
+}
+.gd{
+    width: 400px;
+}
+.botoes{
+    display: flex;
+}
+button{
+    font-size: 1.7vmin;
+    max-width: 90px;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    border-radius: .3em;
+    color: white;
+    margin: 20px 10px 10px;
+}
+.btCon, .btPes{
+    background-color: #47525E;
+}
+.btCan{
+background-color: #E45E08;
+}
+.btEx{
+    background-color: #B6051A;
+}
+/* ------------------Tabela---------------- */
+tr:nth-last-child(2n)
+{
+    background-color: lightgrey;
+}
+/* table{
+    display: flex;
+    align-items: center;
+    margin: 20px 20%;
+} */
+table{
+    margin: 0 2%;
+    background-color: black;
+}
+tbody{
+    background-color: white;
+}
+thead{
+    color:white;
+    background-color: #47525E;
+    width: 100%;
+}
+tr{
+    /* display: flex;
+    justify-content: space-around; */
+    width: 100%;
+    text-align: center;
+}

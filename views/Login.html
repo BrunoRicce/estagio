@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLW Login</title>
+    
+     
+                <!-- <link rel="stylesheet" href="css/login.css"> -->
+    
+
+                <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <!-- <h1>SLW</h1> -->
+        <div class="header-login">
+            <img src="imgs/Logo.png" alt="Logo Dom Bosco">
+        </div>
+        <form class="login-main" action="BAluno.html">
+            <input type="text" placeholder="Nome" id="nome" name="username" maxlength="20" class="login-input" required><br>
+            <input type="password" placeholder="Senha" id="senha" name="password" maxlength="20" class="login-input" required>
+            <p>
+                <input type="radio" name="rblogin" id="rbalun" value="rbalun" checked>
+                <label for="rbalun">Aluno</label>
+                <input type="radio" name="rblogin" id="rbprof" value="rbprof">
+                <label for="rbprof">Professor</label>
+            </p>
+            <button class="btCon">Entrar</button>
+            <a href="2.html">Esqueceu a senha?</a>
+        </form>
+
+    </main>
+</body>
+
+</html>

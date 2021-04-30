@@ -1,0 +1,302 @@
+body{
+    font-family: OpenSans, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+}
+
+/* TELA DE ALUNOS */
+.container-painel{
+    display: flex;
+    padding: 25px;
+}
+nav{
+    border: none;
+    display: flex;
+    flex-direction: column;
+    background-color: #F2F5FA;
+    width:  100%;
+    max-width: 200px;
+    border-radius: 1em;
+    box-shadow: 0 0 0.5em grey;
+}
+form{
+    border: none;
+    width: 600px;
+    height: 300px;
+    flex: auto;
+    background-color: #FAFAFA;
+    border-radius: 0.3em;
+    box-shadow: 0 0 0.5em grey;
+    margin-left: 25px;
+    flex-direction: column;
+    height: 100%;
+}
+img{
+    width:  100%;
+    max-width: 200px;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 25px 0 25px;
+}
+
+.login{
+    display: flex;
+    margin-top: 55px;
+    /* flex-direction: column; */
+    justify-content: center;
+}
+
+.login div{
+    margin-right: 40px;
+}
+
+.loginLabel{
+    text-align: center;
+}
+
+.menu-lateral li a{
+    font-weight: bold;
+    margin: 10px;
+}
+
+.barLabel{
+    font-weight: bolder;
+    background-color: #F2F5FA; 
+    padding: 0 3%;
+}
+.barItem{
+    text-align: left;
+    white-space: none;
+    color: black;
+    text-decoration: none;
+    background-color: #F2F5FA;
+}
+ul{
+    padding: 0;
+    margin: 0;
+}
+li{
+    background-color: #F2F5FA;
+    list-style: none;
+}
+li:last-child, ul, a:last-child 
+{
+    border-radius: .3em;
+}
+
+.barLabel{
+    font-size: 17px;
+    text-align: center;
+    margin: 16px;
+    font-weight: bold;
+    color: #797979;
+}
+
+label.barLabel{
+    border-radius: .3em .3em 0 0;
+}
+a{
+    display: flex;
+    padding: 3% 10%;
+}
+li:hover{
+    filter: brightness(95%);
+    cursor: pointer;
+}
+
+.profile-user{
+    /* display: flex; */
+    flex-direction: column;
+    
+}
+
+.profile-user label{
+    display: flex;
+    
+}
+
+.profile-user::before{
+    content: "";
+    display: block;
+    float: left;
+    margin-right: 15px;
+    margin-top: 0px;
+    height: 28px;
+    width: 28px;
+    background-size: 28px 28px;
+    background-image: url(/user-profile.svg);
+    background-repeat: no-repeat;
+}
+
+.logout::before{
+    content: "";
+    display: block;
+    float: left;
+    margin-right: 15px;
+    margin-top: -3px;
+    height: 28px;
+    width: 28px;
+    background-size: 28px 28px;
+    background-image: url(/logout.svg);
+    background-repeat: no-repeat;
+}
+
+/*------------------------------- CSS DO FORM ----------------------------- */
+.title-gerenciar{
+    margin: 23px;    
+}
+.formu{
+    margin: 1%;
+    padding: 1%;
+    background-color: #e2dddd;
+    border-radius: .5em;
+    display: flex;
+    flex-direction: column;
+}
+div[class*="fm"]{
+    margin: 10px;
+    display: flex;
+    width: min-content;
+    flex-direction: column;
+}
+.linha{
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: left;
+    flex-wrap: wrap;
+    padding: 5px;
+}
+input, select{
+    font-size: 1.7vmin;
+    font-weight: normal;
+    border-radius: 0.3em;
+    border: solid 1px; 
+}
+.gd{
+    width: 400px;
+}
+.botoes{
+    display: flex;
+}
+button{
+    font-size: 19px;
+    max-width: 120px;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    border-radius: .3em;
+    color: white;
+    margin: 20px 10px 10px;
+    
+}
+
+button:hover{
+    filter: brightness(95%);
+    cursor: pointer;
+}
+.btCon, .btPes{
+    background-color: #5BB277;
+}
+.btCan{
+background-color: #E45E08;
+}
+.btEx{
+    background-color: #B6051A;
+}
+/* ------------------Tabela---------------- */
+tr:nth-last-child(2n)
+{
+    background-color: lightgrey;
+}
+
+table{
+    margin: 0 2%;
+    background-color: black;
+}
+tbody{
+    background-color: white;
+}
+thead{
+    color:white;
+    background-color: #47525E;
+    width: 100%;
+}
+tr{
+    /* display: flex;
+    justify-content: space-around; */
+    width: 100%;
+    text-align: center;
+}
+
+
+input[type="radio"]{
+    width: 20px;
+    padding: 0;
+    border-radius: 0;
+
+}
+
+.filtro-pesquisa{
+    padding-top: 32px;
+}
+
+
+/* TELA DE LOGIN*/
+
+.header-login{   
+    text-align: center;
+    margin: 50px 0 50px;
+}
+
+
+.login-main{
+    background-color: hsl(223, 100%, 96%);
+    border: none;
+    width: 30%;
+    padding: 2% 0;
+    margin: 0 auto;
+    box-shadow: 0 0 0.5em grey;
+    border-radius: 0.3em;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+a:hover{
+    color:blue;
+}
+img{
+    height: 5%;
+    width: 20%;
+    text-align: center;
+}
+.login-input{
+    width: 70%;
+}
+input{
+    font-size: 19px;
+    font-weight: normal;
+    border-radius: 0.3em;
+    border: solid 1px;
+    padding: .2em;
+}
+
+select{
+    font-size: 19px;
+    font-weight: normal;
+    border-radius: 0.3em;
+    border: solid 1px;
+    padding: .2em;
+}
+
+label[for*="rb"]{
+    cursor: pointer;
+}
+label, a{
+    font-size: 1.5vmin;
+    font-weight: 500%;
+}
