@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Assunto</title>
+    <title>Gerenciar Autor</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header class="">
-        <img src="imgs/Logo.png" alt="Logo Dom Bosco">
+        <img src="Logo.png" alt="Logo Dom Bosco">
         <div class="login">
             <div class="profile-user">
                 <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
@@ -44,16 +44,22 @@
                 <li> <a href="BAnoSerie.html" class="barItem">Ano/Série</a></li>
             </ul>
         </nav>
-        <form action="">
-            <h1 class="title-gerenciar">Gerênciar Autor</h1>
+        <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/autores/<%=autor[0].Id_Autor%>?_method=PATCH" method="POST">
+            <h1 class="title-gerenciar">Alterar/Excluir Autor</h1>
             <hr>
             <!-- Dados de preenchimento -->
             <div class="formu">
                 <div class="linha">
                     <div class="fmautor">
-                        <label>Nome do Assunto:</label>
-                        <input type="text" placeholder="Nome do Assunto" id="assunto" name="assunto" class="gd" required>
+                        <label>Nome do Autor:</label>
+                        <input type="text" placeholder="Nome do Autor" id="autor" name="autor" class="gd" value="<%=autor[0].Nome%>">
                     </div>
+                </div>
+                <div class="linha botoes">
+                    <button class="btCon">Alterar</button>
+                    <button formaction="/autores/?_method=GET" class="btAlt">Cancelar</button>
+                    <button type="submit" formaction="/autores/<%=autor[0].Id_Autor%>?_method=DELETE" class="btEx"
+                        id="btx">Excluir</button>
                 </div>
             </div>
             <div class="formu">
@@ -61,8 +67,7 @@
                 <div class="linha">
                     <div class="fmpesqui">
                         <label for="">Pesquisar:</label>
-                        <input type="text" placeholder="Pesquisar" id="nome" name="username" maxlength="20" class="gd"
-                            required>
+                        <input type="text" placeholder="Pesquisar" id="nome" name="username" maxlength="20" class="gd">
                     </div>
                     <button class="btPes">Pesquisar</button>
                     <div class="linha filtro-pesquisa">
@@ -76,22 +81,21 @@
                         <tr>
                             <th>Código</th>
                             <th>Nome</th>
-
+                            <th>Ação</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>016288846</td>
-                            <td>Bruno Maciel Ricce</td>
-                        </tr>
-                        <tr>
-                            <td>101634458</td>
-                            <td>José da silva</td>
-                        </tr>
-                        <tr>
-                            <td>101634458</td>
-                            <td>José da silva</td>
-                        </tr>
+                        <% for (let a of list){ %>
+                            <tr>
+                                <td>
+                                    <%= a.Id_Autor%>
+                                </td>
+                                <td>
+                                    <%= a.Nome%>
+                                </td>
+                                <td> <a href="/autores/<%=a.Id_Autor %>"> Editar/Ecluir</a></td>
+                            </tr>
+                            <%}%>
                     </tbody>
                 </table>
             </div>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Ano/Série</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="">
+        <img src="/Logo.png" alt="Logo Dom Bosco">
+        <div class="login">
+            <div class="profile-user">
+                <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
+                <label for="">Função: Admin</label>
+            </div>
+            <div>
+
+            </div>
+            <div class="logout">
+                <label for="" class="loginLabel">Sair</label>
+            </div>
+
+        </div>
+    </header>
+    <main class="container-painel">
+        <nav>
+            <label for="" class="barLabel">Menu</label>
+            <ul class="menu-lateral">
+                <li><a href="BAluno.html" class="barItem" for="Alunos">Alunos</a></li>
+                <li><a href="BProfessor.html" class="barItem">Professores</a></li>
+                <li><a href="BTitulo.html" class="barItem">Títulos</a></li>
+                <li><a href="BExemplar.html" class="barItem">Exemplar</a></li>
+                <li><a href="BEditora.html" class="barItem">Editoras</a></li>
+                <li><a href="BAutor.html" class="barItem">Autores</a></li>
+                <li> <a href="BAssunto.html" class="barItem">Assuntos</a></li>
+                <li> <a href="BEstante.html" class="barItem">Estantes</a></li>
+                <li> <a href="BAnoSerie.html" class="barItem">Ano/Série</a></li>
+            </ul>
+        </nav>
+        <div class="divForm">
+            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/anoserie/" method="post">
+                <h1 class="title-gerenciar">Gerênciar Ano/Série</h1>
+                <hr>
+                <!-- Dados de preenchimento -->
+                <div class="formu">
+                    <div class="linha">
+                        <div class="fmanoserie">
+                            <label>Ano/série:</label>
+                            <input type="text" placeholder="Ano/série" id="anoserie" name="Anoserie" required>
+                        </div>
+                    </div>
+                    <div class="linha">
+                        <div class="fmturma">
+                            <label>Turma:</label>
+                            <input type="text" placeholder="Turma" id="turma" name="Turma" required>
+                        </div>
+                        <!-- <button class="btCon">+</button>
+                    <button class="btEx">-</button> -->
+                    </div>
+                    <div class="linha botoes">
+                        <button class="btCon">Confirmar</button>
+                        <!-- <button class="btCan">Cancelar</button>
+                    <button class="btEx">Excluir</button> -->
+                    </div>
+                </div>
+            </form>
+            <!--tabela-->
+            <form class="formPesq" name="FormPesq" id="formPesq" action="/anoserie/pesq" method="GET">
+                <h2 class="title-gerenciar">Pesquisar</h2>
+                <hr>
+                <div class="formu">
+                    <!-- compo de pesquisa -->
+                    <div class="linha">
+                        <div class="fmpesqui">
+                            <label for="">Pesquisar:</label>
+                            <input type="text" placeholder="Pesquisar" id="nome" name="username" maxlength="20"
+                                class="gd" required>
+                        </div>
+                        <button class="btPes">Pesquisar</button>
+                        <div class="linha filtro-pesquisa">
+                            <input type="radio" name="rbpesquisa" id="rbnome" value="rbnome" checked>
+                            <label for="rbnome">Ano/Série</label>
+                        </div>
+                    </div>
+                    <div style="overflow: auto; width: 1500px; height: 200px; align-content: center;">
+                        <table id="table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Ano/Série</th>
+                                    <th>Turma</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>016288846</td>
+                                    <td>Bruno Maciel Ricce</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>101634458</td>
+                                    <td>José da silva</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>101634458</td>
+                                    <td>José da silva</td>
+                                    <td>4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>
