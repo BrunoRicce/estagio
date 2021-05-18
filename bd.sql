@@ -1,4 +1,10 @@
---0=n deve 1= deve
+-- 0=n deve 1= deve
+DROP DATABASE slw;
+
+CREATE DATABASE slw;
+
+USE slw;
+
 CREATE TABLE `Aluno` (
 	`Id_Aluno` INT NOT NULL AUTO_INCREMENT,
 	`Nome` VARCHAR(80) NOT NULL COLLATE 'utf8_general_ci',
@@ -7,13 +13,13 @@ CREATE TABLE `Aluno` (
     `Telefone` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
     `Email` VARCHAR(45) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
     `Endereco` VARCHAR(80) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
-    `Estado` INT) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+    `Estado` INT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
 	PRIMARY KEY (`Id_Aluno`) USING BTREE
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
---na img serie
+-- na img serie
 CREATE TABLE `Turma` (
 	`Id_Turma` INT NOT NULL AUTO_INCREMENT,
 	`Descricao` VARCHAR(45)  NULL DEFAULT NULL COLLATE 'utf8_general_ci',
@@ -23,7 +29,7 @@ CREATE TABLE `Turma` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
---na img ano
+-- na img ano
 CREATE TABLE `AnoSerie` (
 	`Id_AnoSerie` INT NOT NULL AUTO_INCREMENT,
 	`AnoSerie` VARCHAR(2) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
@@ -135,7 +141,7 @@ CREATE TABLE `Prateleira` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
---0=não emprestado 1=emprestado
+-- 0=não emprestado 1=emprestado
 CREATE TABLE `Exemplar` (
 	`Id_Exemplar` INT NOT NULL AUTO_INCREMENT,
     `Id_Titulo` INT NOT NULL,
@@ -186,7 +192,7 @@ CREATE TABLE `Exemplar_Emprestado` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
---visivel 0=n 1=s | aprovado 0=n 1=s
+-- visivel 0=n 1=s | aprovado 0=n 1=s
 CREATE TABLE `Comentario` (
 	`Id_Comentario` INT NOT NULL AUTO_INCREMENT,
     `Id_Titulo` INT NOT NULL,
@@ -209,4 +215,4 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
 
-DROP TABLE `turma`
+-- DROP TABLE `turma`
