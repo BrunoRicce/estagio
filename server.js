@@ -6,6 +6,7 @@ const AnoserieRouter = require('./routers/AnoserieRouter');
 const EditoraRouter = require('./routers/EditoraRouter');
 const AssuntoRouter = require('./routers/AssuntoRouter');
 const AutorRouter = require('./routers/AutorRouter');
+const EstanteRouter = require('./routers/EstanteRouter');
 const app = express();
 
 app.use(express.urlencoded({ extended: true }))
@@ -33,6 +34,7 @@ app.use('/alunos', AlunoRouter);
 app.use('/anoserie', AnoserieRouter);
 app.use('/editoras', EditoraRouter);
 app.use('/assuntos', AssuntoRouter);
+app.use('/estantes', EstanteRouter);
 
 
 // const db = mysql.createPool({

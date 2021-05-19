@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Ano/Série</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
@@ -53,21 +53,20 @@
                     <div class="linha">
                         <div class="fmanoserie">
                             <label>Ano/série:</label>
-                            <input type="text" placeholder="Ano/série" id="anoserie" name="Anoserie" required>
+                            <input type="text" placeholder="Ano/série" id="anoserie" name="Anoserie">
                         </div>
                     </div>
                     <div class="linha">
                         <div class="fmturma">
                             <label>Turma:</label>
-                            <input type="text" placeholder="Turma" id="turma" name="Turma" required>
+                            <input type="text" placeholder="Turma" id="turma" name="Turma">
                         </div>
                         <!-- <button class="btCon">+</button>
                     <button class="btEx">-</button> -->
                     </div>
                     <div class="linha botoes">
                         <button class="btCon">Confirmar</button>
-                        <!-- <button class="btCan">Cancelar</button>
-                    <button class="btEx">Excluir</button> -->
+                        <button formaction="/anoserie/?_method=GET" class="btAlt">Cancelar</button>
                     </div>
                 </div>
             </form>

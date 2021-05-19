@@ -66,8 +66,8 @@ const alter = async (req, res) => {
 };
 
 const pesq = async(req,res) => {
-  console.log("Pesq: "+req.body.Pesq);
-  console.log("rbpesq: "+req.body.rbpesq);
+  console.log("Pesq: "+req.query.Pesq);
+  console.log("rbpesq: "+req.query.rbpesq);
   //alunos = await alu.pesq(red.body.Pesq, res.body.rbpesq);
   //return res.status(200).render('BAluno/BAlunoINS', { alunos })
 }

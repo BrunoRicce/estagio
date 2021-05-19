@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Autor</title>
+    <title>Gerenciar Estante</title>
 
     <link rel="stylesheet" href="/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -44,22 +44,24 @@
                 <li> <a href="BAnoSerie.html" class="barItem">Ano/Série</a></li>
             </ul>
         </nav>
-        <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/autores/<%=autor[0].Id_Autor%>?_method=PATCH" method="POST">
-            <h1 class="title-gerenciar">Alterar/Excluir Autor</h1>
+        <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/estantes/" method="post">
+            <h1 class="title-gerenciar">Gerênciar Estante</h1>
             <hr>
             <!-- Dados de preenchimento -->
             <div class="formu">
                 <div class="linha">
-                    <div class="fmautor">
-                        <label>Nome do Autor:</label>
-                        <input type="text" placeholder="Nome do Autor" id="autor" name="Autor" class="gd" value="<%=autor[0].Nome%>">
+                    <div class="fmdesc">
+                        <label>Descrição da Estante:</label>
+                        <input type="text" placeholder="Descrição" id="descricao" name="Descricao" class="gd">
+                    </div>
+                    <div class="fmqtd">
+                        <label>Quantidade de Prateleiras:</label>
+                        <input type="text" placeholder="Quantidade de Prateleiras" id="qtd" name="Qtd">
                     </div>
                 </div>
                 <div class="linha botoes">
-                    <button class="btCon">Alterar</button>
-                    <button formaction="/autores/?_method=GET" class="btAlt">Cancelar</button>
-                    <button type="submit" formaction="/autores/<%=autor[0].Id_Autor%>?_method=DELETE" class="btEx"
-                        id="btx">Excluir</button>
+                    <button class="btCon">Confirmar</button>
+                    <button formaction="/estantes/?_method=GET" class="btAlt">Cancelar</button>
                 </div>
             </div>
             <div class="formu">
@@ -72,15 +74,15 @@
                     <button class="btPes">Pesquisar</button>
                     <div class="linha filtro-pesquisa">
                         <input type="radio" name="rbpesquisa" id="rbnome" value="rbnome" checked>
-                        <label for="rbnome">Nome</label>
+                        <label for="rbnome">Descrição</label>
                     </div>
                 </div>
                 <!-- tabela -->
                 <table>
                     <thead>
                         <tr>
-                            <th>Código</th>
-                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Prateleiras</th>
                             <th>Ação</th>
                         </tr>
                     </thead>
@@ -88,12 +90,12 @@
                         <% for (let a of list){ %>
                             <tr>
                                 <td>
-                                    <%= a.Id_Autor%>
+                                    <%= a.Descricao%>
                                 </td>
                                 <td>
-                                    <%= a.Nome%>
+                                    <%= a.Qtd%>
                                 </td>
-                                <td> <a href="/autores/<%=a.Id_Autor %>"> Editar/Ecluir</a></td>
+                                <td> <a href="/estantes/<%=a.Id_Estante %>"> Editar/Ecluir</a></td>
                             </tr>
                             <%}%>
                     </tbody>
