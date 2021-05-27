@@ -17,7 +17,7 @@
 
 <body>
     <header class="">
-        <img src="/Logo.png" alt="Logo Dom Bosco">
+        <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
         <div class="login">
             <div class="profile-user">
                 <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
@@ -34,15 +34,15 @@
         <nav>
             <label for="" class="barLabel">Menu</label>
             <ul class="menu-lateral">
-                <li><a href="/BAluno/BAlunoINS" class="barItem" for="Alunos">Alunos</a></li>
-                <li><a href="/BProfessor" class="barItem">Professores</a></li>
-                <li><a href="/BTitulo" class="barItem">Títulos</a></li>
-                <li><a href="/BExemplar" class="barItem">Exemplar</a></li>
-                <li><a href="/BEditora" class="barItem">Editoras</a></li>
-                <li><a href="/BAutor" class="barItem">Autores</a></li>
-                <li> <a href="/BAssunto" class="barItem">Assuntos</a></li>
-                <li> <a href="/BEstante" class="barItem">Estantes</a></li>
-                <li> <a href="/BAnoSerie" class="barItem">Ano/Série</a></li>
+                <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
+                <li><a href="/professores/" class="barItem">Professores</a></li>
+                <li><a href="/titulos/" class="barItem">Títulos</a></li>
+                <li><a href="/exemplares/" class="barItem">Exemplar</a></li>
+                <li><a href="/editoras/" class="barItem">Editoras</a></li>
+                <li><a href="/autores/" class="barItem">Autores</a></li>
+                <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
+                <li><a href="/estantes/" class="barItem">Estantes</a></li>
+                <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
             </ul>
         </nav>
         <div class="divForm">
@@ -60,18 +60,19 @@
                             <label for="" id="baAnoserie"> Ano/Série:</label>
                             <select name="Anoserie" id="anoserie">
                                 <option value="">Ano/Série</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                                <% for (let a of list){ %>
+                                    <option value="<%=a.Id_AnoSerie %>"><%=a.AnoSerie %>°<%=a.Turma.toUpperCase()%></option>
+                                    <%}%>
                             </select>
                         </div>
-                        <div class="fmturma">
+                        <!-- <div class="fmturma">
                             <label for="" id="baTurma">Turma:</label>
                             <select name="Turma" id="turma">
                                 <option value="">Turma</option>
                                 <option value="A">A</option>
                                 <option value="B">B</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="fmra">
                             <label id="baRa">RA:</label>
                             <input type="number" placeholder="RA" id="ra" name="RA" min="0" minlength="12"
@@ -151,10 +152,10 @@
                                             <%= a.Nome%>
                                         </td>
                                         <td>
-                                            <%= %>
+                                            <%= a.AnoSerie%>
                                         </td>
                                         <td>
-                                            <%= %>
+                                            <%= a.Turma%>
                                         </td>
                                         <td>
                                             <%= a.Estado==0? 'Normal' : 'Devendo' %>

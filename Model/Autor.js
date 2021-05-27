@@ -11,9 +11,14 @@ const getAll = async () => {
 
 const create = async (aut) => {
     try {
-        const result = await connection.execute('select * from autor');
+        const result = await connection.execute(
+            'INSERT INTO autor (Nome) VALUES (?)',
+            [aut.Autor]
+        );
+        //console.log("executou o sql do create em Aluno.js");
         return result[0];
     } catch (error) {
+        console.log("executou o catch");
         return null;
     }
 };
@@ -55,10 +60,24 @@ const delById = async (id) => {
     }
 }
 
+const pesq = async (info) => {
+    sql = "select * from autor where Nome=?";
+try {
+    const result = await connection.execute(
+        sql,
+        [info]
+    );
+    return result[0];
+} catch (error) {
+    return null;
+}
+}
+
 module.exports = {
     create,
     getById,
     delById,
+    pesq,
     alter,
     getAll
 };

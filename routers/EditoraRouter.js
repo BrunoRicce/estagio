@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const EditoraCrtl = require('../Control/EditoraCrtl');
 
+router.get('/pesq', EditoraCrtl.pesq);
 router.get('/', EditoraCrtl.getAll);
 router.get('/:id', EditoraCrtl.getById);
 router.delete('/:id', EditoraCrtl.delById);

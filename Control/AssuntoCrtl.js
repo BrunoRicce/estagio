@@ -59,8 +59,16 @@ const getAll = async (req, res) => {
     // }
   };
 
+  const pesq = async(req,res) => {
+    console.log("Pesq: "+req.query.Pesq);
+    list = await asu.pesq(req.query.Pesq);
+    return res.status(200).render('BAssunto/BAssunto', { list });
+  }
+  
+
   module.exports = {
     getAll,
+    pesq,
     getById,
     delById,
     alter,

@@ -3,7 +3,7 @@ const connection = require('../database/connection');
 const getAll = async () => {
     try {
 
-        const result = await connection.execute('select * from aluno');
+        const result = await connection.execute('select * from professor');
         return result[0];
     } catch (error) {
         return null;
@@ -13,7 +13,7 @@ const getAll = async () => {
 const delById = async (id) => {
     try {
         const result = await connection.execute(
-            "delete from aluno where Id_Aluno=?",
+            "delete from professor where Id_Professor=?",
             [id]
         );
         return result[0];
@@ -25,7 +25,7 @@ const delById = async (id) => {
 const getById = async (id) => {
     try {
         const result = await connection.execute(
-            "select * from aluno where Id_Aluno=?",
+            "select * from professor where Id_Professor=?",
             [id]
         );
         return result[0];
@@ -34,11 +34,11 @@ const getById = async (id) => {
     }
 };
 
-const create = async (alunos) => {//{ Nome, RA, Senha, Telefone, Email, Endereco }
+const create = async (professores) => {//{ Nome, RA, Senha, Telefone, Email, Endereco }
     try {
         const result = await connection.execute(
-            'INSERT INTO aluno (Nome, RA, Senha, Telefone, Email, Endereco, Id_AnoSerie, Estado) VALUES (?,?,?,?,?,?,?,?)',
-            [alunos.Nome, alunos.RA, alunos.Senha, alunos.Telefone, alunos.Email, alunos.Endereco, alunos.Anoserie, 0]
+            'INSERT INTO professor (Nome, Cpf, Senha, Ativo, Tipo_Acesso, Endereco, Telefone, Email) VALUES (?,?,?,?,?,?,?,?)',
+            [professores.Nome, professores.CPF, professores.Senha, professores.Estado, professores.Tipo, professores.Endereco, professores.Telefone, professores.Email]
         );
         //console.log("executou o sql do create em Aluno.js");
         return result[0];
@@ -48,11 +48,11 @@ const create = async (alunos) => {//{ Nome, RA, Senha, Telefone, Email, Endereco
     }
 };
 
-const alter = async (alunos, id) => {//{ Nome, RA, Senha, Telefone, Email, Endereco }
+const alter = async (professores, id) => {//{ Nome, RA, Senha, Telefone, Email, Endereco }
     try {
         const result = await connection.execute(
-            'update aluno set Nome=?, RA=?, Senha=?, Telefone=?, Email=?, Endereco=?, Id_AnoSerie=?, Estado=? where Id_Aluno=?',
-            [alunos.Nome, alunos.RA, alunos.Senha, alunos.Telefone, alunos.Email, alunos.Endereco, alunos.Anoserie, 0, id]
+            'update professor set Nome=?, Cpf=?, Senha=?, Ativo=?, Tipo_Acesso=?, Endereco=?, Telefone=?, Email=? where Id_Professor=?',
+            [professores.Nome, professores.CPF, professores.Senha, professores.Estado, professores.Tipo, professores.Endereco, professores.Telefone, professores.Email, id]
         );
         //console.log("executou o sql do create em Aluno.js");
         return result[0];
@@ -63,14 +63,11 @@ const alter = async (alunos, id) => {//{ Nome, RA, Senha, Telefone, Email, Ender
 };
 
 const pesq = async (info,rbpesq) => {
-    if (rbpesq == 'Rbra')
-        sql = "select * from aluno where RA=?";
+    if (rbpesq == 'Rbcpf')
+        sql = "select * from professor where Cpf=?";
 
     if (rbpesq == 'Rbnome')
-        sql = "select * from aluno where Nome=?";
-
-    if (rbpesq == 'Rbanoserie')
-        sql = "select * from aluno where Id_Aluno=?";//ano e serie tem que buscar em um lugar diferente
+        sql = "select * from professor where Nome=?";
     try {
         const result = await connection.execute(
             sql,

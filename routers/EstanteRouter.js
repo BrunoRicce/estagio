@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const EstanteCrtl = require('../Control/EstanteCrtl');
 
+router.get('/pesq', EstanteCrtl.pesq);
 router.get('/', EstanteCrtl.getAll);
 router.get('/:id', EstanteCrtl.getById);
 router.delete('/:id', EstanteCrtl.delById);

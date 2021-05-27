@@ -3,7 +3,16 @@ const connection = require('../database/connection');
 const getAll = async () => {
     try {
 
-        const result = await connection.execute('select * from estante');
+        const result = await connection.execute("select * from estante");
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
+const getMaiorQtd = async () => {
+    try {
+        const result = await connection.execute('SELECT o.* FROM prateleira o LEFT JOIN prateleira b ON o.Id_Estante = b.Id_Estante AND o.Descricao < b.Descricao WHERE b.Descricao is NULL');
         return result[0];
     } catch (error) {
         return null;
@@ -22,7 +31,7 @@ const getQtd = async () => {
 const getByIdQtd = async (id) => {
     try {
         const result = await connection.execute(
-            "select * from prateleira where Id_Estante=?",
+            "SELECT Id_Estante, MAX(Descricao) as Descricao FROM prateleira WHERE Id_Estante = ? GROUP BY Id_Estante",
             [id]
         );
         return result[0];
@@ -33,12 +42,10 @@ const getByIdQtd = async (id) => {
 
 const create = async (est) => {
     try {
-        const result = await connection.execute(
-            'INSERT INTO estante (Descricao) VALUES (?)',
-            [est.Descricao]);
-        await connection.execute('INSERT INTO prateleira (Descricao, Id_Estante) VALUES (?,?)', [est.Qtd, result[0].insertId]);
-        // for (let i = 0; i < Number(est.Qtd); i++)
-        //     await connection.execute('INSERT INTO prateleira (Descricao, Id_Estante) VALUES (?,?)',[i+1,result[0].insertId]);
+        const result = await connection.execute('INSERT INTO estante (Descricao) VALUES (?)', [est.Descricao]);
+        //await connection.execute('INSERT INTO prateleira (Descricao, Id_Estante) VALUES (?,?)', [est.Qtd, result[0].insertId]);
+        for (let i = 0; i < Number(est.Qtd); i++)
+            await connection.execute('INSERT INTO prateleira (Descricao, Id_Estante) VALUES (?,?)', [i + 1, result[0].insertId]);
         return result[0];
     } catch (error) {
         console.log("executou o catch");
@@ -58,11 +65,33 @@ const getById = async (id) => {
     }
 };
 
-const alter = async (est, id) => {
+const alter = async (est, id, qtd_aux) => {
     try {
-        const result = await connection.execute('update estante set Descricao=? where Id_Estante=?',[est.Descricao, id]);
-        await connection.execute('update prateleira set Descricao=? where Id_Estante=?',[est.Qtd, id]);
-        return result[0];
+        let cont = Number(est.Qtd) - qtd_aux;
+        for (let i = 0; i < cont; i++)
+        {
+            let soma = qtd_aux+i+1;
+            console.log("Soma: "+ soma);
+            await connection.execute('INSERT INTO prateleira (Descricao, Id_Estante) VALUES (?,?)', [soma, id]);
+        } 
+        await connection.execute('update estante set Descricao=? where Id_Estante=?', [est.Descricao, id]);
+        return null;
+    } catch (error) {
+        return null;
+    }
+};
+
+const alter2 = async (est, id, qtd_aux) => {
+    try {
+        let cont = qtd_aux - Number(est.Qtd);
+        for (let i = 0; i < cont; i++)
+        {
+            let soma = qtd_aux-(i);
+            console.log("Soma: "+ soma);
+            await connection.execute('delete from prateleira where Id_Estante=? and Descricao=?', [id,soma]);
+        } 
+        await connection.execute('update estante set Descricao=? where Id_Estante=?', [est.Descricao, id]);
+        return null;
     } catch (error) {
         return null;
     }
@@ -70,8 +99,8 @@ const alter = async (est, id) => {
 
 const delById = async (id) => {
     try {
-        await connection.execute("delete from prateleira where Id_Estante=?",[id]);
-        const result = await connection.execute("delete from estante where Id_Estante=?",[id]);
+        await connection.execute("delete from prateleira where Id_Estante=?", [id]);
+        const result = await connection.execute("delete from estante where Id_Estante=?", [id]);
         return result[0];
     } catch (error) {
         console.log('cath');
@@ -79,12 +108,24 @@ const delById = async (id) => {
     }
 }
 
+const pesq = async (info, rbpesq) => {
+    let sql = "select * from estante where Descricao=?";
+    try {
+        const result = await connection.execute(sql, [info]);
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+}
 module.exports = {
     create,
+    pesq,
     getById,
     getByIdQtd,
     getQtd,
     delById,
     alter,
-    getAll
+    getAll,
+    getMaiorQtd,
+    alter2
 };

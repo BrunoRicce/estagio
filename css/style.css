@@ -3,6 +3,14 @@ body{
     background-color: #f0f2f5;
     margin: 0;
 }
+.container_img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    /* height: 100%;
+    width: 100%;
+    object-fit: cover; */
+} 
 
 /* TELA DE ALUNOS */
 .container-painel{
@@ -31,9 +39,11 @@ form{
     flex-direction: column;
     height: 100%;
 }
-img{
-    width:  100%;
+.logo_img{
     max-width: 200px;
+    height: 5%;
+    width: 20%;
+    text-align: center;
 }
 header{
     display: flex;
@@ -283,11 +293,7 @@ input[type="radio"]{
 a:hover{
     color:blue;
 }
-img{
-    height: 5%;
-    width: 20%;
-    text-align: center;
-}
+
 .login-input{
     width: 70%;
 }

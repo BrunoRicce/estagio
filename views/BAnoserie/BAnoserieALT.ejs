@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Autor</title>
+    <title>Gerenciar Ano/Série</title>
 
     <link rel="stylesheet" href="/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -45,46 +45,59 @@
             </ul>
         </nav>
         <div class="divForm">
-            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/autores/" method="post">
-                <h1 class="title-gerenciar">Gerênciar Autor</h1>
+            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/anoseries/<%=anse[0].Id_AnoSerie%>?_method=PATCH" method="post">
+                <h1 class="title-gerenciar">Gerênciar Ano/Série</h1>
                 <hr>
                 <!-- Dados de preenchimento -->
                 <div class="formu">
                     <div class="linha">
-                        <div class="fmautor">
-                            <label>Nome do Autor:</label>
-                            <input type="text" placeholder="Nome do Autor" id="autor" name="Autor" class="gd">
+                        <div class="fmanoserie">
+                            <label>Ano/série:</label>
+                            <input type="text" placeholder="Ano/série" id="anoserie" name="Anoserie" value="<%=anse[0].AnoSerie %>">
                         </div>
                     </div>
+                    <div class="linha">
+                        <div class="fmturma">
+                            <label>Turma:</label>
+                            <input type="text" placeholder="Turma" id="turma" name="Turma" value="<%=tur[0].Turma %>">
+                        </div>
+                        <!-- <button class="btCon">+</button>
+                    <button class="btEx">-</button> -->
+                    </div>
                     <div class="linha botoes">
-                        <button class="btCon">Confirmar</button>
-                        <button formaction="/autores/?_method=GET" class="btAlt">Cancelar</button>
+                        <button class="btCon">Alterar</button>
+                        <button class="btAlt" formaction="/anoseries/?_method=GET">Cancelar</button>
+                        <button type="submit" formaction="/anoseries/<%=anse[0].Id_AnoSerie %>?_method=DELETE" class="btEx"
+                            id="btx">Excluir</button>
                     </div>
                 </div>
             </form>
-            <form class="formPesq" name="FormPesq" id="formPesq" action="/autores/pesq" method="GET">
+            <!--tabela-->
+            <form class="formPesq" name="FormPesq" id="formPesq" action="/anoseries/pesq" method="GET">
                 <h2 class="title-gerenciar">Pesquisar</h2>
                 <hr>
                 <div class="formu">
-                    <!-- campo de pesquisa -->
+                    <!-- compo de pesquisa -->
                     <div class="linha">
                         <div class="fmpesqui">
                             <label for="">Pesquisar:</label>
-                            <input type="text" placeholder="Pesquisar" id="nome" name="Pesq" maxlength="20" class="gd">
+                            <input type="text" placeholder="Pesquisar" id="nome" name="Pesq" maxlength="20"
+                                class="gd" required>
                         </div>
                         <button class="btPes">Pesquisar</button>
                         <div class="linha filtro-pesquisa">
-                            <input type="radio" name="rbpesquisa" id="rbnome" value="rbnome" checked>
-                            <label for="rbnome">Nome</label>
+                            <input type="radio" name="rbpesq" id="rbas" value="rbanoserie" checked>
+                            <label for="rbnome">Ano/Série</label>
+                            <input type="radio" name="rbpesq" id="rbtur" value="rbturma">
+                            <label for="rbnome">Turma</label>
                         </div>
                     </div>
-                    <!-- tabela -->
                     <div style="overflow: auto; width: 1500px; height: 200px; align-content: center;">
-                        <table id="tabela">
+                        <table id="table">
                             <thead>
                                 <tr>
-                                    <th>Código</th>
-                                    <th>Nome</th>
+                                    <th>Ano/Série</th>
+                                    <th>Turma</th>
                                     <th>Ação</th>
                                 </tr>
                             </thead>
@@ -92,12 +105,12 @@
                                 <% for (let a of list){ %>
                                     <tr>
                                         <td>
-                                            <%= a.Id_Autor%>
+                                            <%=a.AnoSerie%>
                                         </td>
                                         <td>
-                                            <%= a.Nome%>
+                                            <%=a.Turma.toUpperCase()%>
                                         </td>
-                                        <td> <a href="/autores/<%=a.Id_Autor %>"> Editar/Ecluir</a></td>
+                                        <td> <a href="/anoseries/<%=a.Id_AnoSerie %>"> Editar/Ecluir</a></td>
                                     </tr>
                                     <%}%>
                             </tbody>

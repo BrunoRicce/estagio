@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Títulos</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="">
+        <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
+        <div class="login">
+            <div class="profile-user">
+                <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
+                <label for="">Função: Admin</label>
+            </div>
+            <div>
+
+            </div>
+            <div class="logout">
+                <label for="" class="loginLabel">Sair</label>
+            </div>
+
+        </div>
+    </header>
+    <main class="container-painel">
+        <nav>
+            <label for="" class="barLabel">Menu</label>
+            <ul class="menu-lateral">
+                <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
+                <li><a href="/professores/" class="barItem">Professores</a></li>
+                <li><a href="/titulos/" class="barItem">Títulos</a></li>
+                <li><a href="/exemplares/" class="barItem">Exemplar</a></li>
+                <li><a href="/editoras/" class="barItem">Editoras</a></li>
+                <li><a href="/autores/" class="barItem">Autores</a></li>
+                <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
+                <li><a href="/estantes/" class="barItem">Estantes</a></li>
+                <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+            </ul>
+        </nav>
+        <div class="divForm">
+        <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/titulos/" method="post">
+            <h1 class="title-gerenciar">Gerenciar Títulos</h1>
+            <hr>
+            <!-- Dados de preenchimento -->
+            <div class="formu">
+                <div class="linha">
+                    <div class="fmtitulo">
+                        <label for="">Título:</label>
+                        <input type="text" placeholder="Título" id="titulo" name="Titulo" class="gd"
+                            >
+                    </div>
+                    <div class="fmano">
+                        <label>Ano de Publicação:</label>
+                        <input type="number" placeholder="Ano de Publicação"  id="anop" name="Anop">
+                    </div>
+                    <div class="fmqtd">
+                        <label>Quantidade:</label>
+                        <input type="number" placeholder="Quantidade" id="qtd" name="Qtd" >
+                    </div>
+                </div>
+                <div class="linha">
+                    <div class="fmautor">
+                        <label for=""> Autor:</label>
+                        <select name="Autor" id="autor">
+                            <option value="">Autor*</option>
+                            <% for (let a of laut){ %>
+                                <option value="<%=a.Id_Autor %>"><%=a.Nome %></option>
+                                <%}%>
+                        </select>
+                    </div>
+                    <div class="fmassunto">
+                        <label for=""> Assunto:</label>
+                        <select name="Assunto" id="assunto" >
+                            <option value="">Assunto*</option>
+                            <% for (let a of lasu){ %>
+                                <option value="<%=a.Id_Assunto %>"><%=a.Nome %></option>
+                                <%}%>
+                        </select>
+                    </div>
+                    <div class="fmeditora">
+                        <label for=""> Editora:</label>
+                        <select name="Editora" id="editora" >
+                            <option value="">Editora*</option>
+                            <% for (let a of ledi){ %>
+                                <option value="<%=a.Id_Editora %>"><%=a.Nome %></option>
+                                <%}%>
+                        </select>
+                    </div>
+                </div>
+                <div class="linha botoes">
+                    <button class="btCon">Confirmar</button>
+                    <button formaction="/titulos/?_method=GET" class="btAlt">Cancelar</button>
+                </div>
+            </div>
+        </form>
+        <form class="formPesq" name="FormPesq" id="formPesq" action="/titulos/pesq" method="GET">
+            <h2 class="title-gerenciar">Pesquisar</h2>
+            <hr>
+            <div class="formu">
+                <!-- compo de pesquisa -->
+                <div class="linha">
+                    <div class="fmpesqui">
+                        <label for="">Pesquisar:</label>
+                        <input type="text" placeholder="Pesquisar" id="nome" name="Pesq" maxlength="20"
+                                class="gd">
+                    </div>
+                    <button class="btPes">Pesquisar</button>
+                    <div class="linha filtro-pesquisa">
+                        <input type="radio" name="rbpesq" id="rbtitulo" value="Rbtitulo" checked>
+                        <label for="rbtitulo">Título</label>
+                        <input type="radio" name="rbpesq" id="rbautor" value="Rbautor">
+                        <label for="rbautor">Autor</label>
+                        <input type="radio" name="rbpesq" id="rbass" value="Rbass">
+                        <label for="rbass">Assunto</label>
+                    </div>
+                </div>
+                <!-- tabela -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Assunto</th>
+                            <th>Quantidade Disponível</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let a of list){ %>
+                            <tr>
+                                <td>
+                                    <%= a.Titulo%>
+                                </td>
+                                <td>
+                                    <%= a.Autor%>
+                                </td>
+                                <td>
+                                    <%= a.Assunto%>
+                                </td>
+                                <td>
+                                    <%= a.Qtd_Disponivel%>/<%= a.Qtd_total%>
+                                </td>
+                                <td> <a href="/titulos/<%=a.Id_Titulo %>"> Editar/Ecluir</a></td>
+                            </tr>
+                            <%}%>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    </main>
+</body>
+
+</html>

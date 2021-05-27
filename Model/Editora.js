@@ -61,9 +61,23 @@ const delById = async (id) => {
     }
 }
 
+const pesq = async (info) => {
+    sql = "select * from editora where Nome=?";
+try {
+    const result = await connection.execute(
+        sql,
+        [info]
+    );
+    return result[0];
+} catch (error) {
+    return null;
+}
+}
+
 module.exports = {
     create,
     getById,
+    pesq,
     delById,
     alter,
     getAll

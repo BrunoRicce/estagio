@@ -72,7 +72,7 @@ CREATE TABLE `Titulo` (
 	`Id_Titulo` INT NOT NULL AUTO_INCREMENT,
     `Id_Editora` INT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
     `Titulo` VARCHAR(80) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
-    `Ano_Publicacao` DATETIME NULL DEFAULT NULL,
+    `Ano_Publicacao` VARCHAR(15) NULL DEFAULT NULL,
     `Qtd_total` INT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
     `Qtd_Disponivel` INT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
 	PRIMARY KEY (`Id_Titulo`) USING BTREE,
@@ -214,5 +214,13 @@ CREATE TABLE `Comentario` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
+
+ALTER TABLE aluno
+  ADD Id_AnoSerie INT,
+  ADD FOREIGN KEY (Id_AnoSerie) REFERENCES anoserie(Id_AnoSerie)
+
+INSERT INTO estante (Descricao) VALUES ('Estante 1')
+INSERT INTO prateleira (Descricao, Id_Estante) VALUES (1,1)
+INSERT INTO prateleira (Descricao, Id_Estante) VALUES (1,2)
 
 -- DROP TABLE `turma`

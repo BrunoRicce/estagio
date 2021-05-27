@@ -59,9 +59,16 @@ const getAll = async (req, res) => {
     // }
   };
 
+  const pesq = async(req,res) => {
+    console.log("Pesq: "+req.query.Pesq);
+    list = await aut.pesq(req.query.Pesq);
+    return res.status(200).render('BAutor/BAutor', { list });
+  }
+
   module.exports = {
     getAll,
     getById,
+    pesq,
     delById,
     alter,
     create
