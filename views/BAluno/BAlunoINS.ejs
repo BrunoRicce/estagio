@@ -20,8 +20,8 @@
         <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
         <div class="login">
             <div class="profile-user">
-                <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
-                <label for="">Função: Admin</label>
+                <label class="" for="" class="loginLabel"><%=login.Nome%></label>
+                <label for=""><% if(login.Acesso==0) {%>Aluno<%}%><% if(login.Acesso==1) {%>Professor<%}%><% if(login.Acesso==2) {%>RSL<%}%><% if(login.Acesso==3) {%>Admin<%}%></label>
             </div>
             <div>
             </div>
@@ -34,6 +34,7 @@
         <nav>
             <label for="" class="barLabel">Menu</label>
             <ul class="menu-lateral">
+                <% if(login.Acesso>1) {%>
                 <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
                 <li><a href="/professores/" class="barItem">Professores</a></li>
                 <li><a href="/titulos/" class="barItem">Títulos</a></li>
@@ -43,10 +44,11 @@
                 <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
                 <li><a href="/estantes/" class="barItem">Estantes</a></li>
                 <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <%}%>
             </ul>
         </nav>
         <div class="divForm">
-            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/alunos/" method="post">
+            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/alunos/" method="post" novalidate>
                 <h1 class="title-gerenciar">Gerenciar Aluno</h1>
                 <hr>
                 <!-- Dados de preenchimento -->
@@ -54,11 +56,11 @@
                     <div class="linha">
                         <div class="fmnome">
                             <label for="" id="baNome" color="red">Nome:</label>
-                            <input type="text" placeholder="Nome" id="nome" name="Nome" maxlength="20" class="gd">
+                            <input type="text" placeholder="Nome" id="nome" name="Nome" maxlength="20" class="gd" required>
                         </div>
                         <div class="fmano/serie">
                             <label for="" id="baAnoserie"> Ano/Série:</label>
-                            <select name="Anoserie" id="anoserie">
+                            <select name="Anoserie" id="anoserie" required>
                                 <option value="">Ano/Série</option>
                                 <% for (let a of list){ %>
                                     <option value="<%=a.Id_AnoSerie %>"><%=a.AnoSerie %>°<%=a.Turma.toUpperCase()%></option>
@@ -76,7 +78,7 @@
                         <div class="fmra">
                             <label id="baRa">RA:</label>
                             <input type="number" placeholder="RA" id="ra" name="RA" min="0" minlength="12"
-                                maxlength="20">
+                                maxlength="20" required>
                         </div>
                         <div class="fmsenha">
                             <label id="baSenha">Senha:</label>
@@ -102,7 +104,7 @@
                         <input type="hidden" id="id" name="ID">
                     </div>
                     <div class="linha botoes">
-                        <button class="btCon">Confirmar</button>
+                        <button class="btCon" onclick="return window.mySubmitFunction('','')">Confirmar</button>
                         <button formaction="/alunos/?_method=GET" class="btAlt">Cancelar</button>
                         <!-- <button onclick="formDelete()" class="btEx" id="btx" disabled>Excluir</button> -->
                     </div>
@@ -155,7 +157,7 @@
                                             <%= a.AnoSerie%>
                                         </td>
                                         <td>
-                                            <%= a.Turma%>
+                                            <%= a.Turma.toUpperCase()%>
                                         </td>
                                         <td>
                                             <%= a.Estado==0? 'Normal' : 'Devendo' %>
@@ -172,6 +174,7 @@
             </form>
         </div>
     </main>
+    <script src="/script.js"></script>
 </body>
 
 </html>

@@ -20,8 +20,8 @@
         <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
         <div class="login">
             <div class="profile-user">
-                <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
-                <label for="">Função: Admin</label>
+                <label class="" for="" class="loginLabel"><%=login.Nome%></label>
+                <label for=""><% if(login.Acesso==0) {%>Aluno<%}%><% if(login.Acesso==1) {%>Professor<%}%><% if(login.Acesso==2) {%>RSL<%}%><% if(login.Acesso==3) {%>Admin<%}%></label>
             </div>
             <div>
             </div>
@@ -34,6 +34,7 @@
         <nav>
             <label for="" class="barLabel">Menu</label>
             <ul class="menu-lateral">
+                <% if(login.Acesso>1) {%>
                 <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
                 <li><a href="/professores/" class="barItem">Professores</a></li>
                 <li><a href="/titulos/" class="barItem">Títulos</a></li>
@@ -43,11 +44,12 @@
                 <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
                 <li><a href="/estantes/" class="barItem">Estantes</a></li>
                 <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <%}%>
             </ul>
         </nav>
         <div class="divForm">
             <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/alunos/<%=aluno[0].Id_Aluno %>?_method=PATCH"
-                method="POST">
+                method="POST" novalidate>
                 <h1 class="title-gerenciar">Editar/Excluir Aluno</h1>
                 <hr>
                 <!-- Dados de preenchimento -->
@@ -56,7 +58,7 @@
                         <div class="fmnome">
                             <label for="" id="baNome" color="red">Nome:</label>
                             <input type="text" placeholder="Nome" id="nome" name="Nome" maxlength="20" class="gd"
-                                value="<%=aluno[0].Nome %>">
+                                value="<%=aluno[0].Nome %>" required>
                         </div>
                         <div class="fmano/serie">
                             <label for="" id="baAnoserie"> Ano/Série:</label>
@@ -78,12 +80,12 @@
                         <div class="fmra">
                             <label id="baRa">RA:</label>
                             <input type="text" placeholder="RA" id="ra" name="RA" min="0" minlength="12" maxlength="20"
-                                value="<%=Number(aluno[0].RA); %>">
+                                value="<%=Number(aluno[0].RA); %>" required>
                         </div>
                         <div class="fmsenha">
                             <label id="baSenha">Senha:</label>
                             <input type="text" placeholder="Senha" id="senha" name="Senha" min="0"
-                                value="<%=aluno[0].Senha %>">
+                                value="<%=aluno[0].Senha %>" required>
                         </div>
                     </div>
 
@@ -109,9 +111,9 @@
                     </div>
 
                     <div class="linha botoes">
-                        <button class="btCon">Alterar</button>
+                        <button class="btCon" onclick="return window.mySubmitFunction('','')">Alterar</button>
                         <button class="btAlt" formaction="/alunos/?_method=GET">Cancelar</button>
-                        <button type="submit" formaction="/alunos/<%=aluno[0].Id_Aluno %>?_method=DELETE" class="btEx"
+                        <button type="submit" onclick="return window.mySubmitFunction('ex','')" formaction="/alunos/<%=aluno[0].Id_Aluno %>?_method=DELETE" class="btEx"
                             id="btx">Excluir</button>
                     </div>
                 </div>
@@ -163,7 +165,7 @@
                                             <%= a.AnoSerie%>
                                         </td>
                                         <td>
-                                            <%= a.Turma%>
+                                            <%= a.Turma.toUpperCase()%>
                                         </td>
                                         <td>
                                             <%= a.Estado==0? 'Inativo' : 'Ativo' %>
@@ -180,6 +182,7 @@
             </form>
         </div>
     </main>
+    <script src="/script.js"></script>
 </body>
 
 </html>

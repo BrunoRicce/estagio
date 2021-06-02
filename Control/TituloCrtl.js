@@ -2,37 +2,45 @@ const titu = require('../Model/Titulo');
 const aut = require('../Model/Autor');
 const edi = require('../Model/Editora');
 const asu = require('../Model/Assunto');
+const exm = require('../Model/Exemplar');
 
 let list = null;
 let laut = null;
 let ledi = null;
 let lasu = null;
 let qtd_aux = null;
+let login;
 
 const getAll = async (req, res) => {
-  //try {
-  list = await titu.getAll();
-  laut = await aut.getAll();
-  ledi = await edi.getAll();
-  lasu = await asu.getAll();
-  // console.log("--------titulo----------");
-  // console.log(list);
-  // console.log("--------assunto----------");
-  // console.log(lasu);
-  // console.log("---------autor---------");
-  // console.log(laut);
-  list = await merge(list);
-  return res.status(200).render('BTitulo/BTitulo', { list, laut, ledi, lasu });
-  //} 
-  // catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
+  try {
+    if (req.session.Acesso != undefined) {
+      login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
+      list = await titu.getAll();
+      laut = await aut.getAll();
+      ledi = await edi.getAll();
+      lasu = await asu.getAll();
+      // console.log("--------titulo----------");
+      // console.log(list);
+      // console.log("--------assunto----------");
+      // console.log(lasu);
+      // console.log("---------autor---------");
+      // console.log(laut);
+      console.log(list);
+      list = await merge(list);
+      return res.status(200).render('BTitulo/BTitulo', { list, laut, ledi, lasu, login });
+    }
+    return res.status(200).render('login', { mensagem: '' });
+  }
+  catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
+  }
 };
 
 async function merge(list) {//lista de tituloa
   let lista = [];
   for (let i = 0; i < list.length; i++) {
     let autor = await titu.getAutorById(list[i].Id_Titulo);
+    console.log(autor[0]);
     let assunto = await titu.getAssuntoById(list[i].Id_Titulo);
     autor = await aut.getById(autor[0].Id_Autor);
     assunto = await asu.getById(assunto[0].Id_Assunto);
@@ -53,20 +61,17 @@ async function merge2(list) {//lista de autores/assuntos do titulo
 }
 
 const create = async (req, res) => {
-  //try {
-  if (req.body.Titulo == '' || req.body.Anop == '' || req.body.Qtd == '' || req.body.Autor == '' || req.body.Assunto == '' || req.body.Editora == '') {
-    //alert("Os campos Nome, RA, Ano e Série são obrigatórios");
-    // document.getElementById("baNome").innerHTML += " *obrigatório";
-    // document.getElementById("baNome").setAttribute("style", "color:red");
-    console.log("inf obrigatória invalida");
+  try {
+    if (req.body.Titulo == '' || req.body.Anop == '' || req.body.Autor == '' || req.body.Assunto == '' || req.body.Editora == '') {
+      console.log("inf obrigatória invalida");
+    }
+    else {
+      await titu.create(req.body);
+      return res.status(200).redirect("/titulos/");
+    }
+  } catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }
-  else {
-    await titu.create(req.body);
-    return res.status(200).redirect("/titulos/");
-  }
-  // } catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
 }
 
 const pesq = async (req, res) => {
@@ -87,53 +92,49 @@ const pesq = async (req, res) => {
 
   list = await merge(list);
 
-  return res.status(200).render('BTitulo/BTitulo', { list, laut, ledi, lasu });
+  return res.status(200).render('BTitulo/BTitulo', { list, laut, ledi, lasu, login });
 }
 
 const getById = async (req, res) => {
-  //try {
-  let titulo = await titu.getById(req.params.id);
-  titulo = await merge(titulo);
-  //var thedate = new Date(Date.parse("2011-07-14 11:23:00"));
-  console.log(titulo);
-  qtd_aux = Number(titulo[0].Qtd_total);
-  return res.status(200).render('BTitulo/BTituloALT', { list, laut, ledi, lasu, titulo });
-  // } catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
+  try {
+    let titulo = await titu.getById(req.params.id);
+    titulo = await merge(titulo);
+
+    //qtd_aux = Number(titulo[0].Qtd_total);
+    return res.status(200).render('BTitulo/BTituloALT', { list, laut, ledi, lasu, titulo, login });
+  } catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
+  }
 };
 
 const alter = async (req, res) => {
-  //try {
-    let qtdd =Number(req.body.Qtd);
-    let dis =Number(req.body.Qtddis);
-  if (req.body.Titulo == '' || req.body.Anop == '' || req.body.Qtd == '' || req.body.Autor == '' || req.body.Assunto == '' || req.body.Editora == '' || qtdd<dis || qtdd<0) {
-    //alert("Os campos Nome, RA, Ano e Série são obrigatórios");
-    // document.getElementById("baNome").innerHTML += " *obrigatório";
-    // document.getElementById("baNome").setAttribute("style", "color:red");
-    console.log("inf obrigatória invalida");
+  try {
+
+    if (req.body.Titulo == '' || req.body.Anop == '' || req.body.Autor == '' || req.body.Assunto == '' || req.body.Editora == '') {
+      console.log("inf obrigatória invalida");
+    }
+    else {
+      await titu.delAssuntoById(req.params.id);
+      await titu.delAutorById(req.params.id);
+      await titu.alter(req.body, req.params.id);
+      return res.status(200).redirect("/titulos/");
+    }
+  } catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }
-  else {
-    await titu.delAssuntoById(req.params.id);
-    await titu.delAutorById(req.params.id);
-    await titu.alter(req.body, req.params.id, qtd_aux);
-    return res.status(200).redirect("/titulos/");
-  }
-  // } catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
 };
 
 const delById = async (req, res) => {
-  //try {
+  try {
 
-  await titu.delAutorById(req.params.id);
-  await titu.delAssuntoById(req.params.id);
-  await titu.delById(req.params.id);
-  return res.status(200).redirect("/titulos/");
-  // } catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
+    await titu.delAutorById(req.params.id);
+    await exm.delByTituloId(req.params.id);
+    await titu.delAssuntoById(req.params.id);
+    await titu.delById(req.params.id);
+    return res.status(200).redirect("/titulos/");
+  } catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
+  }
 };
 
 module.exports = {

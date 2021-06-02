@@ -17,7 +17,8 @@
         <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
         <div class="login">
             <div class="profile-user">
-                <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
+                <label class="" for="" class="loginLabel"><%=login.Nome%></label>
+                <label for=""><% if(login.Acesso==0) {%>Aluno<%}%><% if(login.Acesso==1) {%>Professor<%}%><% if(login.Acesso==2) {%>RSL<%}%><% if(login.Acesso==3) {%>Admin<%}%></label><label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
                 <label for="">Função: Admin</label>
             </div>
             <div>
@@ -31,6 +32,7 @@
         <nav>
             <label for="" class="barLabel">Menu</label>
             <ul class="menu-lateral">
+                <% if(login.Acesso>1) {%>
                 <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
                 <li><a href="/professores/" class="barItem">Professores</a></li>
                 <li><a href="/titulos/" class="barItem">Títulos</a></li>
@@ -40,11 +42,12 @@
                 <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
                 <li><a href="/estantes/" class="barItem">Estantes</a></li>
                 <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <%}%>
             </ul>
         </nav>
         <div class="divForm">
             <form class="formInfo" name="FormCad" id="formCad" autocomplete="off"
-                action="/professores/<%=professor[0].Id_Professor%>?_method=PATCH" method="post">
+                action="/professores/<%=professor[0].Id_Professor%>?_method=PATCH" method="post" novalidate>
                 <h1 class="title-gerenciar">Editar/Excluir Professores</h1>
                 <hr>
                 <!-- Dados de preenchimento -->
@@ -53,17 +56,17 @@
                         <div class="fmnome">
                             <label for="">Nome:</label>
                             <input type="text" placeholder="Nome" id="nome" name="Nome" maxlength="20" class="gd"
-                                value="<%=professor[0].Nome%>">
+                                value="<%=professor[0].Nome%>" required>
                         </div>
                         <div class="fmcpf">
                             <label>CPF:</label>
                             <input type="text" placeholder="CPF" id="cpf" name="CPF" maxlength="20"
-                                value="<%=professor[0].Cpf%>">
+                                value="<%=professor[0].Cpf%>" required>
                         </div>
                         <div class="fmsenha">
                             <label id="baSenha">Senha:</label>
                             <input type="text" placeholder="Senha" id="senha" name="Senha" min="0"
-                                value="<%=professor[0].Senha%>">
+                                value="<%=professor[0].Senha%>" required>
                         </div>
                         <div class="fmestado">
                             <label for=""> Estado:</label>
@@ -114,9 +117,9 @@
                         </div>
                     </div>
                     <div class="linha botoes">
-                        <button class="btCon">Alterar</button>
+                        <button class="btCon" onclick="return window.mySubmitFunction('','')">Alterar</button>
                         <button formaction="/professores/?_method=GET" class="btAlt">Cancelar</button>
-                        <button type="submit" formaction="/professores/<%=professor[0].Id_Professor%>?_method=DELETE"
+                        <button type="submit" onclick="return window.mySubmitFunction('ex','')" formaction="/professores/<%=professor[0].Id_Professor%>?_method=DELETE"
                             class="btEx" id="btx">Excluir</button>
                     </div>
                 </div>
@@ -178,6 +181,7 @@
             </form>
         </div>
     </main>
+    <script src="/script.js"></script>
 </body>
 
 </html>

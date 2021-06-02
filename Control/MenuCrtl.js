@@ -1,13 +1,18 @@
 const getAll = async (req, res) => {
-    //try {
-    return res.status(200).render('BMenu',);
-    //} 
-    // catch (error) {
-    //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-    // }
+    try {
+      if(req.session.Acesso != undefined)
+      {
+        console.log(req.session.Acesso);
+        let login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
+      return res.status(200).render('BMenu',{login});
+      }
+      return res.status(200).render('login',{mensagem:''});
+    } 
+    catch (error) {
+      return res.status(500).render('errors/error', { error: ' ERROR 500' });
+    }
   };
 
   module.exports = {
     getAll,
-
   };

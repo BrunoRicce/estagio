@@ -2,17 +2,24 @@ const alu = require('../Model/Aluno');
 const as = require('../Model/Anoserie');
 let alunos = null;
 let list = null;
+let login = null
 
 const getAll = async (req, res) => {
-  //try {
-  list = await getAnoSerie();//lista de anoserie e turma com merge
-  alunos = await alu.getAll();
-  alunos = mergeAluAS(alunos, list);
-  return res.status(200).render('BAluno/BAlunoINS', { alunos, list });
-  //} 
-  // catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
+  try {
+    if (req.session.Acesso != undefined) {
+      login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
+      list = await getAnoSerie();//lista de anoserie e turma com merge
+      alunos = await alu.getAll();
+      alunos = mergeAluAS(alunos, list);
+      console.log('----------')
+      console.log(req.session);
+      return res.status(200).render('BAluno/BAlunoINS', { alunos, list, login });
+    }
+    return res.status(200).render('login',{mensagem:''});
+  }
+  catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
+  }
 };
 
 function mergeAluAS(list, list2) {
@@ -54,58 +61,58 @@ async function getAnoSerie() {
 }
 
 const delById = async (req, res) => {
-  //try {
-  await alu.delById(req.params.id);
-  return res.status(200).redirect("/alunos/");
-  // } catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
+  try {
+    await alu.delById(req.params.id);
+    return res.status(200).redirect("/alunos/");
+  } catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
+  }
 };
 
 const getById = async (req, res) => {
-  //try {
-  let aluno = await alu.getById(req.params.id);
-  aluno = mergeAluAS(aluno,list);
-  return res.status(200).render('BAluno/BAlunoALT', { aluno, alunos, list });
-  // } catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
+  try {
+    let aluno = await alu.getById(req.params.id);
+    aluno = mergeAluAS(aluno, list);
+    return res.status(200).render('BAluno/BAlunoALT', { aluno, alunos, list, login });
+  } catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
+  }
 };
 
 const create = async (req, res) => {
-  //try {
-  if (req.body.Nome == '' || req.body.RA == '' || req.body.Anoserie == '') {
-    //alert("Os campos Nome, RA, Ano e Série são obrigatórios");
-    // document.getElementById("baNome").innerHTML += " *obrigatório";
-    // document.getElementById("baNome").setAttribute("style", "color:red");
-    console.log("inf obrigatória invalida");
+  try {
+    if (req.body.Nome == '' || req.body.RA == '' || req.body.Anoserie == '') {
+      //alert("Os campos Nome, RA, Ano e Série são obrigatórios");
+      // document.getElementById("baNome").innerHTML += " *obrigatório";
+      // document.getElementById("baNome").setAttribute("style", "color:red");
+      console.log("inf obrigatória invalida");
+    }
+    else {
+      if (req.body.Senha == '')
+        req.body.Senha = Math.floor(Math.random() * 100000) + 10000;
+      await alu.create(req.body);
+      return res.status(200).redirect("/alunos/");
+    }
+  } catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }
-  else {
-    if (req.body.Senha == '')
-      req.body.Senha = Math.floor(Math.random() * 100000) + 10000;
-    await alu.create(req.body);
-    return res.status(200).redirect("/alunos/");
-  }
-  // } catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
 };
 
 const alter = async (req, res) => {
-  //try {
-  if (req.body.Nome == '' || req.body.RA == '' || req.body.Senha == '') {
-    //alert("Os campos Nome, RA, Ano e Série são obrigatórios");
-    // document.getElementById("baNome").innerHTML += " *obrigatório";
-    // document.getElementById("baNome").setAttribute("style", "color:red");
-    console.log("inf obrigatória invalida");
+  try {
+    if (req.body.Nome == '' || req.body.RA == '' || req.body.Senha == '') {
+      //alert("Os campos Nome, RA, Ano e Série são obrigatórios");
+      // document.getElementById("baNome").innerHTML += " *obrigatório";
+      // document.getElementById("baNome").setAttribute("style", "color:red");
+      console.log("inf obrigatória invalida");
+    }
+    else {
+      await alu.alter(req.body, req.params.id);
+      return res.status(200).redirect("/alunos/");
+    }
+  } catch (error) {
+    return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }
-  else {
-    await alu.alter(req.body, req.params.id);
-    return res.status(200).redirect("/alunos/");
-  }
-  // } catch (error) {
-  //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-  // }
 };
 
 const pesq = async (req, res) => {
@@ -113,7 +120,7 @@ const pesq = async (req, res) => {
   list = await getAnoSerie();
 
   alunos = mergeAluAS(alunos, list);
-  return res.status(200).render('BAluno/BAlunoINS', { alunos, list });
+  return res.status(200).render('BAluno/BAlunoINS', { alunos, list, login });
 }
 
 module.exports = {

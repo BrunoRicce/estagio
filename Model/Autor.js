@@ -36,6 +36,19 @@ const getById = async (id) => {
     }
 };
 
+const getByIdAutorTitulo = async (id) => {
+    try {
+        const result = await connection.execute(
+            "select * from autor_do_titulo where Id_Autor=?",
+            [id]
+        );
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
+
 const alter = async (aut, id) => {
     try {
         const result = await connection.execute(
@@ -79,5 +92,6 @@ module.exports = {
     delById,
     pesq,
     alter,
-    getAll
+    getAll,
+    getByIdAutorTitulo
 };

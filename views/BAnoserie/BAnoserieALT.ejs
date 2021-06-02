@@ -17,8 +17,8 @@
         <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
         <div class="login">
             <div class="profile-user">
-                <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
-                <label for="">Função: Admin</label>
+                <label class="" for="" class="loginLabel"><%=login.Nome%></label>
+                <label for=""><% if(login.Acesso==0) {%>Aluno<%}%><% if(login.Acesso==1) {%>Professor<%}%><% if(login.Acesso==2) {%>RSL<%}%><% if(login.Acesso==3) {%>Admin<%}%></label>
             </div>
             <div>
 
@@ -33,6 +33,7 @@
         <nav>
             <label for="" class="barLabel">Menu</label>
             <ul class="menu-lateral">
+                <% if(login.Acesso>1) {%>
                 <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
                 <li><a href="/professores/" class="barItem">Professores</a></li>
                 <li><a href="/titulos/" class="barItem">Títulos</a></li>
@@ -42,33 +43,36 @@
                 <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
                 <li><a href="/estantes/" class="barItem">Estantes</a></li>
                 <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <%}%>
             </ul>
         </nav>
         <div class="divForm">
-            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/anoseries/<%=anse[0].Id_AnoSerie%>?_method=PATCH" method="post">
-                <h1 class="title-gerenciar">Gerênciar Ano/Série</h1>
+            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/anoseries/<%=anse[0].Id_AnoSerie%>?_method=PATCH" method="post" novalidate>
+                <h1 class="title-gerenciar">Alterar/Excluir Ano/Série<%if(excluir!=0){%>*este Ano/Série não pode ser excluido, alunos nele<% }%></h1>
                 <hr>
                 <!-- Dados de preenchimento -->
                 <div class="formu">
                     <div class="linha">
                         <div class="fmanoserie">
                             <label>Ano/série:</label>
-                            <input type="text" placeholder="Ano/série" id="anoserie" name="Anoserie" value="<%=anse[0].AnoSerie %>">
+                            <input type="text" placeholder="Ano/série" id="anoserie" name="Anoserie" value="<%=anse[0].AnoSerie %>" required>
                         </div>
                     </div>
                     <div class="linha">
                         <div class="fmturma">
                             <label>Turma:</label>
-                            <input type="text" placeholder="Turma" id="turma" name="Turma" value="<%=tur[0].Turma %>">
+                            <input type="text" placeholder="Turma" id="turma" name="Turma" value="<%=tur[0].Turma %>" required>
                         </div>
                         <!-- <button class="btCon">+</button>
                     <button class="btEx">-</button> -->
                     </div>
                     <div class="linha botoes">
-                        <button class="btCon">Alterar</button>
+                        <button class="btCon" onclick="return window.mySubmitFunction('','')">Alterar</button>
                         <button class="btAlt" formaction="/anoseries/?_method=GET">Cancelar</button>
-                        <button type="submit" formaction="/anoseries/<%=anse[0].Id_AnoSerie %>?_method=DELETE" class="btEx"
+                        <% if(excluir==0){ %>
+                        <button type="submit" onclick="return window.mySubmitFunction('ex','')"  formaction="/anoseries/<%=anse[0].Id_AnoSerie %>?_method=DELETE" class="btEx"
                             id="btx">Excluir</button>
+                            <% }%>
                     </div>
                 </div>
             </form>
@@ -120,6 +124,7 @@
             </form>
         </div>
     </main>
+    <script src="/script.js"></script>
 </body>
 
 </html>

@@ -3,18 +3,22 @@ const connection = require('../database/connection');
 const getAll = async () => {
     try {
 
-        const result = await connection.execute('select * from titulo');
+        const result = await connection.execute('select * from exemplar');
         return result[0];
     } catch (error) {
         return null;
     }
 };
 
-const delById = async (id) => {
+const delById = async (id,idt,qtdd,qtdt) => {
     try {
         const result = await connection.execute(
-            "delete from titulo where Id_Titulo=?",
+            "delete from exemplar where Id_Exemplar=?",
             [id]
+        );
+        await connection.execute(//alter qtd exem
+            'update titulo set Qtd_total=?, Qtd_Disponivel=? where Id_Titulo = ?',
+            [qtdt, qtdd, idt]
         );
         return result[0];
     } catch (error) {
@@ -25,7 +29,7 @@ const delById = async (id) => {
 const getById = async (id) => {
     try {
         const result = await connection.execute(
-            "select * from titulo where Id_Titulo=?",
+            "select * from exemplar where Id_Exemplar=?",
             [id]
         );
         return result[0];
@@ -34,22 +38,10 @@ const getById = async (id) => {
     }
 };
 
-const getAutorById = async (id) => {
+const getByIdPrateleira = async (id) => {
     try {
         const result = await connection.execute(
-            "select * from autor_do_titulo where Id_Titulo=?",
-            [id]
-        );
-        return result[0];
-    } catch (error) {
-        return null;
-    }
-};
-
-const getAssuntoById = async (id) => {
-    try {
-        const result = await connection.execute(
-            "select * from assunto_do_titulo where Id_Titulo=?",
+            "select * from exemplar where Id_Prateleira=?",
             [id]
         );
         return result[0];
@@ -81,45 +73,19 @@ const delAssuntoById = async (id) => {
         return null;
     }
 };
+  
 
-
-const getAutor = async (id) => {
+const create = async (exem, idp, qtdt, qtdd) => {
     try {
-        const result = await connection.execute(
-            "select * from autor_do_titulo where Id_Autor=?",
-            [id]
-        );
-        return result[0];
-    } catch (error) {
-        return null;
-    }
-};
-
-const getAssunto = async (id) => {
-    try {
-        const result = await connection.execute(
-            "select * from assunto_do_titulo where Id_Assunto=?",
-            [id]
-        );
-        return result[0];
-    } catch (error) {
-        return null;
-    }
-};
-
-const create = async (titulo) => {//{ Nome, RA, Senha, Telefone, Email, Endereco }
-    try {
-        const result = await connection.execute(
-            'INSERT INTO titulo (Id_Editora, Titulo, Ano_Publicacao, Qtd_total, Qtd_Disponivel) VALUES (?,?,?,?,?)',
-            [titulo.Editora, titulo.Titulo, titulo.Anop, titulo.Qtd, titulo.Qtd]
-        );
+        const result = null;
+        for(let i =0; i< Number(exem.Qtd);i++)
         await connection.execute(
-            'INSERT INTO autor_do_titulo (Id_Autor, Id_Titulo) VALUES (?,?)',
-            [titulo.Autor, result[0].insertId]
+            'INSERT INTO exemplar (Id_Titulo, Id_Prateleira, Ano_compra, Emprestado) VALUES (?,?,?,?)',
+            [ exem.Titulo, idp, exem.Anoc,0]//0= não emprestado/ 1=emprestado
         );
-        await connection.execute(
-            'INSERT INTO assunto_do_titulo (Id_Assunto, Id_Titulo) VALUES (?,?)',
-            [titulo.Assunto, result[0].insertId]
+        await connection.execute(//alter qtd exem
+            'update titulo set Qtd_total=?, Qtd_Disponivel=? where Id_Titulo = ?',
+            [qtdt, qtdd, exem.Titulo]
         );
         return result[0];
     } catch (error) {
@@ -127,25 +93,11 @@ const create = async (titulo) => {//{ Nome, RA, Senha, Telefone, Email, Endereco
     }
 };
 
-const alter = async (titulo, id,  qtd_aux) => {//{ Nome, RA, Senha, Telefone, Email, Endereco }
+const alter = async (exem, idprat, id) => {
      try {
-        if(qtd_aux<Number(titulo.Qtd))//só é valido quando aumenta | Qnado dimuir é so inserir
-        {
-            let cont = Number(titulo.Qtd)- qtd_aux;
-            titulo.Qtddis = Number(titulo.Qtddis) + cont;
-        }
         const result = await connection.execute(
-            'update titulo set Id_Editora=?, Titulo=?, Ano_Publicacao=?, Qtd_total=?, Qtd_Disponivel=? where Id_Titulo=?',
-            [titulo.Editora, titulo.Titulo, titulo.Anop, titulo.Qtd, titulo.Qtddis, id]
-        );
-        await connection.execute(
-            'INSERT INTO autor_do_titulo (Id_Autor, Id_Titulo) VALUES (?,?)',
-            [titulo.Autor, id]
-        );
-        console.log("3");
-        await connection.execute(
-            'INSERT INTO assunto_do_titulo (Id_Assunto, Id_Titulo) VALUES (?,?)',
-            [titulo.Assunto, id]
+            'update exemplar set Id_Titulo=?, Id_Prateleira=?, Ano_compra=? where Id_Exemplar=?',
+            [ exem.Titulo, idprat, exem.Anoc, id]
         );
         //console.log("executou o sql do create em Aluno.js");
         return result[0];
@@ -156,7 +108,7 @@ const alter = async (titulo, id,  qtd_aux) => {//{ Nome, RA, Senha, Telefone, Em
 };
 
 const pesq = async (info) => {
-    let sql = "select * from titulo where Titulo=?";
+    let sql = "select * from exem where Titulo=?";
     try {
         const result = await connection.execute(
             sql,
@@ -168,6 +120,18 @@ const pesq = async (info) => {
         return null;
     }
 }
+const delByTituloId = async (id) => {
+    try {
+        const result = await connection.execute(
+            "delete from exemplar where Id_Titulo=?",
+            [id]
+        );
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
 
 module.exports = {
     getAll,
@@ -176,10 +140,8 @@ module.exports = {
     create,
     alter,
     pesq,
-    getAutorById,
-    getAssuntoById,
-    getAutor,
-    getAssunto,
     delAutorById,
-    delAssuntoById
+    delAssuntoById,
+    delByTituloId,
+    getByIdPrateleira
 };

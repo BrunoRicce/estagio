@@ -133,7 +133,7 @@ ENGINE=InnoDB
 
 CREATE TABLE `Prateleira` (
 	`Id_Prateleira` INT NOT NULL AUTO_INCREMENT,   
-	`Descricao` VARCHAR(45) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`Descricao` INT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
     `Id_Estante` INT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
 	PRIMARY KEY (`Id_Prateleira`) USING BTREE,
     FOREIGN KEY (Id_Estante) REFERENCES Estante(Id_Estante)
@@ -147,7 +147,7 @@ CREATE TABLE `Exemplar` (
     `Id_Titulo` INT NOT NULL,
     `Id_Prateleira` INT NOT NULL,
     `Emprestado` INT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
-	`Ano_compra` DATETIME NULL DEFAULT NULL,
+	`Ano_compra` VARCHAR(50) NULL DEFAULT NULL,
 
 	PRIMARY KEY (`Id_Exemplar`) USING BTREE,
     FOREIGN KEY (Id_Titulo) REFERENCES Titulo(Id_Titulo),

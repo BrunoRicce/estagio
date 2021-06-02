@@ -34,6 +34,19 @@ const getById = async (id) => {
     }
 };
 
+
+const getByIdAnoSerie = async (id) => {
+    try {
+        const result = await connection.execute(
+            "select * from aluno where Id_AnoSerie=?",
+            [id]
+        );
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
 const create = async (alunos) => {//{ Nome, RA, Senha, Telefone, Email, Endereco }
     try {
         const result = await connection.execute(
@@ -88,5 +101,6 @@ module.exports = {
     delById,
     create,
     alter,
-    pesq
+    pesq,
+    getByIdAnoSerie
 };

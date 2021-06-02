@@ -40,6 +40,29 @@ const getByIdQtd = async (id) => {
     }
 };
 
+const getByIdQtd2 = async (ide, desc) => {
+    try {
+        const result = await connection.execute(
+            "SELECT *  FROM prateleira WHERE Id_Estante = ? and Descricao=?",
+            [ide,desc]
+        );
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
+const getMinPrat = async () => {
+    try {
+        const result = await connection.execute(
+            "SELECT prateleira.Id_Estante, MAX(Descricao) as Qtd FROM exemplar INNER JOIN prateleira ON exemplar.Id_Prateleira = prateleira.Id_Prateleira GROUP BY prateleira.Id_Estante;"
+        );
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
 const create = async (est) => {
     try {
         const result = await connection.execute('INSERT INTO estante (Descricao) VALUES (?)', [est.Descricao]);
@@ -67,6 +90,7 @@ const getById = async (id) => {
 
 const alter = async (est, id, qtd_aux) => {
     try {
+        console.log("Alter")
         let cont = Number(est.Qtd) - qtd_aux;
         for (let i = 0; i < cont; i++)
         {
@@ -83,6 +107,7 @@ const alter = async (est, id, qtd_aux) => {
 
 const alter2 = async (est, id, qtd_aux) => {
     try {
+        console.log("Alter2")
         let cont = qtd_aux - Number(est.Qtd);
         for (let i = 0; i < cont; i++)
         {
@@ -127,5 +152,7 @@ module.exports = {
     alter,
     getAll,
     getMaiorQtd,
-    alter2
+    alter2,
+    getByIdQtd2,
+    getMinPrat
 };

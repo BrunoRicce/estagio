@@ -1,15 +1,21 @@
 const as = require('../Model/Anoserie');
+const alu = require('../Model/Aluno');
 let list = null;
+let login;
 const getAll = async (req, res) => {
-    //try {
-    list = await as.getAll();
-    let list2 = await as.getAllTurma();
-    list = merge(list, list2);
-    return res.status(200).render('BAnoserie/BAnoserie', { list });
-    //} 
-    // catch (error) {
-    //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-    // }
+    try {
+        if (req.session.Acesso != undefined) {
+            login = { Nome: req.session.Nome, Acesso: req.session.Acesso };
+            list = await as.getAll();
+            let list2 = await as.getAllTurma();
+            list = merge(list, list2);
+            return res.status(200).render('BAnoserie/BAnoserie', { list, login });
+        }
+        return res.status(200).render('login', { mensagem: '' });
+    }
+    catch (error) {
+        return res.status(500).render('errors/error', { error: ' ERROR 500' });
+    }
 };
 
 function merge(list, list2) {
@@ -26,32 +32,31 @@ function merge(list, list2) {
 }
 
 const create = async (req, res) => {
-    //try {
-    if (req.body.Anoserie == '' || req.body.Turma == '') {
-        //alert("Os campos Nome, RA, Ano e Série são obrigatórios");
-        // document.getElementById("baNome").innerHTML += " *obrigatório";
-        // document.getElementById("baNome").setAttribute("style", "color:red");
-        console.log("inf obrigatória invalida");
-    }
-    else {
-        // console.log("Create")
-        let idturma = null;
-        let turmas = await as.getAllTurma();
-        let series = await as.getAll();
-        let lista = merge(series, turmas);
-        if (!procura(lista, req.body.Anoserie, req.body.Turma)) {
-            for (let i = 0; i < turmas.length; i++)
-                if (turmas[i].Turma.toUpperCase() == req.body.Turma.toUpperCase())
-                    idturma = turmas[i].Id_Turma;
-            await as.create(req.body, idturma);
-            return res.status(200).redirect("/anoseries/");
+    try {
+        if (req.body.Anoserie == '' || req.body.Turma == '') {
+            console.log("inf obrigatória invalida");
         }
-        else
-            console.log(req.body.Anoserie+""+ req.body.Turma+" já existe!");
+        else {
+            // console.log("Create")
+            let idturma = null;
+            let turmas = await as.getAllTurma();
+            let series = await as.getAll();
+            let lista = merge(series, turmas);
+            if (!procura(lista, req.body.Anoserie, req.body.Turma)) {
+                for (let i = 0; i < turmas.length; i++)
+                    if (turmas[i].Turma.toUpperCase() == req.body.Turma.toUpperCase())
+                        idturma = turmas[i].Id_Turma;
+                await as.create(req.body, idturma);
+                return res.status(200).redirect("/anoseries/");
+            }
+            else {
+                console.log(req.body.Anoserie + "" + req.body.Turma + " já existe!");
+                return res.status(200).redirect("/anoseries/");
+            }
+        }
+    } catch (error) {
+        return res.status(500).render('errors/error', { error: ' ERROR 500' });
     }
-    // } catch (error) {
-    //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-    // }
 };
 
 function procura(lista, anse, tur) {
@@ -82,51 +87,53 @@ const pesq = async (req, res) => {
     let list2 = await as.getAllTurma();
     list = merge(list, list2);
     list = listPesq(list, req.query.rbpesq, req.query.Pesq);
-    return res.status(200).render('BAnoserie/BAnoserie', { list });
+    return res.status(200).render('BAnoserie/BAnoserie', { list, login });
 }
 
 const getById = async (req, res) => {
-    //try {
-    const anse = await as.getById(req.params.id);
-    const tur = await as.getByIdTurma(anse[0].Id_Turma);
-    return res.status(200).render('BAnoserie/BAnoserieALT', { anse, tur, list });
-    // } catch (error) {
-    //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-    // }
+    try {
+        const anse = await as.getById(req.params.id);
+        const tur = await as.getByIdTurma(anse[0].Id_Turma);
+        let excluir = await alu.getByIdAnoSerie(anse[0].Id_AnoSerie);
+        console.log(excluir);
+        return res.status(200).render('BAnoserie/BAnoserieALT', { anse, tur, list, excluir: excluir.length, login });
+    } catch (error) {
+        return res.status(500).render('errors/error', { error: ' ERROR 500' });
+    }
 };
 
 const delById = async (req, res) => {
-    //try {
-    await as.delById(req.params.id);
-    return res.status(200).redirect("/anoseries/");
-    // } catch (error) {
-    //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-    // }
+    try {
+        await as.delById(req.params.id);
+        return res.status(200).redirect("/anoseries/");
+    } catch (error) {
+        return res.status(500).render('errors/error', { error: ' ERROR 500' });
+    }
 };
 
 const alter = async (req, res) => {
-    //try {
-    if (req.body.Descricao == '' || req.body.Qtd == '') {
-        console.log("inf obrigatória invalida");
-    }
-    else {
-        let idturma = null;
-        let turmas = await as.getAllTurma();
-        let series = await as.getAll();
-        let lista = merge(series, turmas);
-        if (!procura(lista, req.body.Anoserie, req.body.Turma)) {
-            for (let i = 0; i < turmas.length; i++)
-                if (turmas[i].Turma.toUpperCase() == req.body.Turma.toUpperCase())
-                    idturma = turmas[i].Id_Turma;
-            await as.alter(req.body, idturma, req.params.id);
-            return res.status(200).redirect("/anoseries/");
+    try {
+        if (req.body.Descricao == '' || req.body.Qtd == '') {
+            console.log("inf obrigatória invalida");
         }
-        else
-            console.log(req.body.Anoserie+""+ req.body.Turma+" já existe!"); 
+        else {
+            let idturma = null;
+            let turmas = await as.getAllTurma();
+            let series = await as.getAll();
+            let lista = merge(series, turmas);
+            if (!procura(lista, req.body.Anoserie, req.body.Turma)) {
+                for (let i = 0; i < turmas.length; i++)
+                    if (turmas[i].Turma.toUpperCase() == req.body.Turma.toUpperCase())
+                        idturma = turmas[i].Id_Turma;
+                await as.alter(req.body, idturma, req.params.id);
+                return res.status(200).redirect("/anoseries/");
+            }
+            else
+                console.log(req.body.Anoserie + "" + req.body.Turma + " já existe!");
+        }
+    } catch (error) {
+        return res.status(500).render('errors/error', { error: ' ERROR 500' });
     }
-    // } catch (error) {
-    //   return res.status(500).render('errors/error', { error: 'FATAL ERROR 500' });
-    // }
 };
 module.exports = {
     getAll,

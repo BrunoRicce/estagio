@@ -46,8 +46,9 @@
             </ul>
         </nav>
         <div class="divForm">
-            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/exemplares/" method="post" novalidate>
-                <h1 class="title-gerenciar" id="aaa">Gerenciar Exemplar</h1>
+            <!-- onsubmit="return mySubmitFunction('','')" -->
+            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off"  action="/exemplares/<%=exemplar[0].Id_Exemplar %>?_method=PATCH" method="post" novalidate>
+                <h1 class="title-gerenciar" id="aaa">Aleterar/Excluir Exemplar</h1>
                 <hr>
                 <!-- Dados de preenchimento -->
                 <div class="formu">
@@ -55,45 +56,68 @@
                         <div class="fmtitulo">
                             <label for=""> Título:</label>
                             <select name="Titulo" id="titulo" class="gd" required>
-                                <option value="">Título*</option>
-                                <% for (let a of ltitu){ %>
+                                <option value="<%=exemplar[0].Id_Titulo %>">
+                                    <%=exemplar[0].Titulo %>
+                                </option>
+                                <% for (let a of ltitu){ if(exemplar[0].Id_Titulo!=a.Id_Titulo){%>
                                     <option value="<%=a.Id_Titulo %>">
                                         <%=a.Titulo %>
                                     </option>
-                                    <%}%>
+                                    <%}}%>
                             </select>
-                        </div>
-                        <div class="fmqtd">
-                            <label>Qauntidade:</label>
-                            <input type="number" placeholder="Quantidade" id="qtd" name="Qtd" min="0" required>
                         </div>
                         <div class="fmano">
                             <label>Ano da Compra:</label>
-                            <input type="text" placeholder="Ano da Compra" id="anoc" name="Anoc" >
+                            <input type="text" placeholder="Ano da Compra" id="anoc" name="Anoc"
+                                value="<%=exemplar[0].Ano_compra%>"> 
+                        </div>
+                        <div class="fmest">
+                            <label>Estado:</label>
+                            <input type="text" placeholder="Ano da Compra" id="est" name="Est"
+                                value="<%=exemplar[0].Emprestado==0? 'Disponível' : 'Emprestado'%>" style="color:grey">
                         </div>
                     </div>
                     <div class="linha">
                         <div class="fmprateleira">
                             <label for=""> Estante:</label>
-                            <select name="Estante" id="estante" class="a" required>
-                                <option value="">Estante*</option>
-                                <% for (let a of lest){ %>
-                                    <option value="<%=a.Id_Estante %>/<%= a.Qtd%>">
+                            <select name="Estante" id="estante" class="a">
+                                <% for (let a of lest){if(exemplar[0].Id_Estante==a.Id_Estante) {%>
+                                    <option value="<%=a.Id_Estante %>/<%=a.Qtd%>">
                                         <%=a.Descricao%>
                                     </option>
-                                    <%}%>
+                                    <%}}%>
+                                        <% for (let a of lest){if(exemplar[0].Id_Estante!=a.Id_Estante) {%>
+                                            <option value="<%=a.Id_Estante %>/<%=a.Qtd%>">
+                                                <%=a.Descricao%>
+                                            </option>
+                                            <%}}%>
                             </select>
                         </div>
-                        <div class="fmestante" id="prat" style="display: none;">
+                        <div class="fmestante" id="prat">
                             <label for=""> Prateleira:</label>
                             <select name="Prateleira" id="prateleira">
-                                <option value="">Prateleira*</option>
+                                <option value="<%=exemplar[0].Pos %>">
+                                    <%=exemplar[0].Pos%>
+                                </option>
+                                <% for(let a of lest) {%>
+                                    <% if(exemplar[0].Id_Estante==a.Id_Estante) {%>
+                                        <%for (let i=1; i< a.Qtd+1; i++){%>
+                                            <% if(i!=exemplar[0].Pos) {%>
+                                                <option value="<%=i %>">
+                                                    <%=i%>
+                                                </option>
+                                                <%}%>
+                                                    <%}%>
+                                                        <%}%>
+                                                            <%}%>
                             </select>
                         </div>
                     </div>
                     <div class="linha botoes">
-                        <button class="btCon" onclick="return window.mySubmitFunction('','')" >Confirmar</button>
+                        <button class="btCon">Alterar</button>
                         <button formaction="/exemplares/?_method=GET" class="btAlt">Cancelar</button>
+                        <button type="submit" id="exclu" onclick="return window.mySubmitFunction('ex','')" formaction="/exemplares/<%=exemplar[0].Id_Exemplar %>?_method=DELETE"
+                            class="btEx" id="btx">Excluir</button>
                     </div>
                 </div>
             </form>
@@ -158,7 +182,6 @@
         </div>
     </main>
     <script src="/script.js"></script>
-    <script src="/ExemplarDOM.js"></script>
 </body>
 
 </html>

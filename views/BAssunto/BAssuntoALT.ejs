@@ -17,8 +17,8 @@
         <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
         <div class="login">
             <div class="profile-user">
-                <label class="" for="" class="loginLabel">Bruno Maciel Ricce</label>
-                <label for="">Função: Admin</label>
+                <label class="" for="" class="loginLabel"><%=login.Nome%></label>
+                <label for=""><% if(login.Acesso==0) {%>Aluno<%}%><% if(login.Acesso==1) {%>Professor<%}%><% if(login.Acesso==2) {%>RSL<%}%><% if(login.Acesso==3) {%>Admin<%}%></label>
             </div>
             <div>
 
@@ -33,6 +33,7 @@
         <nav>
             <label for="" class="barLabel">Menu</label>
             <ul class="menu-lateral">
+                <% if(login.Acesso>1) {%>
                 <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
                 <li><a href="/professores/" class="barItem">Professores</a></li>
                 <li><a href="/titulos/" class="barItem">Títulos</a></li>
@@ -42,25 +43,28 @@
                 <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
                 <li><a href="/estantes/" class="barItem">Estantes</a></li>
                 <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <%}%>
             </ul>
         </nav>
         <div class="divForm">
-            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/assuntos/<%=assunto[0].Id_Assunto%>?_method=PATCH" method="POST">
-                <h1 class="title-gerenciar">Alterar/Excluir Assunto</h1>
+            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/assuntos/<%=assunto[0].Id_Assunto%>?_method=PATCH" method="POST" novalidate>
+                <h1 class="title-gerenciar">Alterar/Excluir Assunto <%if(excluir!=0){%>*este assunto não pode ser excluido, existem títulos com seu nome<% }%></h1>
                 <hr>
                 <!-- Dados de preenchimento -->
                 <div class="formu">
                     <div class="linha">
                         <div class="fmautor">
                             <label>Nome do Assunto:</label>
-                            <input type="text" placeholder="Nome do Assunto" id="assunto" name="Assunto" class="gd" value="<%=assunto[0].Nome%>" >
+                            <input type="text" placeholder="Nome do Assunto" id="assunto" name="Assunto" class="gd" value="<%=assunto[0].Nome%>" required>
                         </div>
                     </div>
                     <div class="linha botoes">
-                        <button class="btCon">Alterar</button>
-                        <button formaction="/assuntos/?_method=GET" class="btAlt">Cancelar</button>
-                        <button type="submit" formaction="/assuntos/<%=assunto[0].Id_Assunto%>?_method=DELETE" class="btEx"
+                        <button class="btCon" onclick="return window.mySubmitFunction('','')">Alterar</button>
+                        <button  formaction="/assuntos/?_method=GET" class="btAlt">Cancelar</button>
+                        <% if(excluir==0){ %>
+                        <button type="submit" onclick="return window.mySubmitFunction('ex','')" formaction="/assuntos/<%=assunto[0].Id_Assunto%>?_method=DELETE" class="btEx"
                             id="btx">Excluir</button>
+                            <% }%>
                     </div>
                 </div>
             </form>
@@ -108,6 +112,7 @@
             </form>
         </div>
     </main>
+    <script src="/script.js"></script>
 </body>
 
 </html>
