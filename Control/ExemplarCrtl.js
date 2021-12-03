@@ -154,11 +154,13 @@ const pesq = async (req, res) => {
 
 const getById = async (req, res) => {
     try {
-        let exemplar = await exm.getById(req.params.id);
-        exemplar = exmTituPrat(exemplar, ltitu, lpratAll);
-        titulo_aux = await titu.getById(exemplar[0].Id_Titulo);
-        console.log(titulo_aux[0]);
-        return res.status(200).render('BExemplar/BExemplarALT', { list, lest, ltitu, exemplar, login });
+        if (req.session.Acesso != undefined) {
+            let exemplar = await exm.getById(req.params.id);
+            exemplar = exmTituPrat(exemplar, ltitu, lpratAll);
+            titulo_aux = await titu.getById(exemplar[0].Id_Titulo);
+            console.log(titulo_aux[0]);
+            return res.status(200).render('BExemplar/BExemplarALT', { list, lest, ltitu, exemplar, login });
+        }
     } catch (error) {
         return res.status(500).render('errors/error', { error: ' ERROR 500' });
     }

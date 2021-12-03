@@ -34,7 +34,6 @@ const getById = async (id) => {
     }
 };
 
-
 const getByIdAnoSerie = async (id) => {
     try {
         const result = await connection.execute(
@@ -95,6 +94,31 @@ const pesq = async (info,rbpesq) => {
     }
 }
 
+const alterEstado = async ( est, id) => {//{ Nome, RA, Senha, Telefone, Email, Endereco }
+    try {
+        const result = await connection.execute(
+            'update aluno set Estado=? where Id_Aluno=?',
+            [est,id]
+        );
+        //console.log("executou o sql do create em Aluno.js");
+        return result[0];
+    } catch (error) {
+        //console.log("executou o catch do create em Aluno.js");
+        return null;
+    }
+};
+
+const getAtrasado = async () => {
+    try {
+        const result = await connection.execute(
+            "select * from aluno where Estado=0"
+        );
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
 module.exports = {
     getAll,
     getById,
@@ -102,5 +126,7 @@ module.exports = {
     create,
     alter,
     pesq,
-    getByIdAnoSerie
+    getByIdAnoSerie,
+    alterEstado,
+    getAtrasado
 };

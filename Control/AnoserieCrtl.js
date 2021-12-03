@@ -92,11 +92,13 @@ const pesq = async (req, res) => {
 
 const getById = async (req, res) => {
     try {
-        const anse = await as.getById(req.params.id);
-        const tur = await as.getByIdTurma(anse[0].Id_Turma);
-        let excluir = await alu.getByIdAnoSerie(anse[0].Id_AnoSerie);
-        console.log(excluir);
-        return res.status(200).render('BAnoserie/BAnoserieALT', { anse, tur, list, excluir: excluir.length, login });
+        if (req.session.Acesso != undefined) {
+            const anse = await as.getById(req.params.id);
+            const tur = await as.getByIdTurma(anse[0].Id_Turma);
+            let excluir = await alu.getByIdAnoSerie(anse[0].Id_AnoSerie);
+            console.log(excluir);
+            return res.status(200).render('BAnoserie/BAnoserieALT', { anse, tur, list, excluir: excluir.length, login });
+        }
     } catch (error) {
         return res.status(500).render('errors/error', { error: ' ERROR 500' });
     }

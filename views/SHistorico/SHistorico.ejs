@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Aluno</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="script.js"></script>
+    <script src="Aluno.js"></script> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="">
+        <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
+        <div class="login">
+            <div class="profile-user">
+                <label class="" for="" class="loginLabel"><%=login.Nome%></label>
+                <label for=""><% if(login.Acesso==0) {%>Aluno<%}%><% if(login.Acesso==1) {%>Professor<%}%><% if(login.Acesso==2) {%>RSL<%}%><% if(login.Acesso==3) {%>Admin<%}%></label>
+            </div>
+            <div>
+            </div>
+            <div class="logout">
+                <a href="/logout/"><label for="" class="loginLabel">Sair</label></a>
+            </div>
+        </div>
+    </header>
+    <main class="container-painel">
+        <nav>
+            <label for="" class="barLabel">Menu</label>
+            <ul class="menu-lateral">
+                <% if(login.Acesso>1) {%>
+                <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
+                <li><a href="/professores/" class="barItem">Professores</a></li>
+                <li><a href="/titulos/" class="barItem">Títulos</a></li>
+                <li><a href="/exemplares/" class="barItem">Exemplar</a></li>
+                <li><a href="/editoras/" class="barItem">Editoras</a></li>
+                <li><a href="/autores/" class="barItem">Autores</a></li>
+                <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
+                <li><a href="/estantes/" class="barItem">Estantes</a></li>
+                <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <li><a href="/regemprestimo/" class="barItem">Registrar Emprestimo</a></li>
+                <li><a href="/regdevolucao/" class="barItem">Registrar Devolução</a></li>
+                <li><a href="/requisicoesvis/" class="barItem">Requisições Realizadas</a></li>
+                <%}%>
+                <% if(login.Acesso>0) {%>
+                <li><a href="/regrequisicoes/" class="barItem">Requisições dos Professores</a></li>
+                <%}%>
+                <% if(login.Acesso==0) {%>
+                <li><a href="/recaluno/" class="barItem">Requisições de Livros</a></li>
+                <%}%>
+                <li><a href="/pesqexemplares/" class="barItem">Pesquisar Exemplares</a></li>
+                <li><a href="/regcomentario/" class="barItem">Realizar Comentário</a></li>
+                <li><a href="/anacomentario/" class="barItem">Analisar Comentários</a></li>
+                <li><a href="/viscomentario/" class="barItem">Vizualizar Comentários</a></li>
+                <% if(login.Acesso>0) {%>
+                    <li><a href="/localizacoes/" class="barItem">Relatorio de Localização de Livros</a></li>
+                    <li><a href="/devolucoes/" class="barItem">Relatorio de Devoluções Atrasadas</a></li>
+                    <li><a href="/disponiveis/" class="barItem">Relatorio de Exemplares Disponiveis</a></li>
+                    <li><a href="/historico/" class="barItem">Relatorio de Histórico de Emprestimos</a></li>
+                    <li><a href="/melhorleitor/" class="barItem">Relatorio de Melhor Leitor Mensal</a></li>
+                    <li><a href="/livrosmaislidos/" class="barItem">Relatorio de Livros Mais Lidos</a></li>
+                <%}%>
+            </ul>
+        </nav>
+        <div class="divForm">
+            <!-- tabela -->
+            <form class="formPesq" name="FormPesq" id="formPesq" action="/historico/pesq" method="GET">
+                <h2 class="title-gerenciar">Histórico de Empréstimos</h2>
+                <hr>
+                <div class="formu">
+                    <!-- compo de pesquisa -->
+                    <div class="linha">
+                        <div class="fmpesqui">
+                            <label for="">Pesquisar:</label>
+                            <input type="text" placeholder="Pesquisar" id="pesq" name="Pesq" class="gd">
+                        </div>
+                        <button class="btPes">Pesquisar</button>
+                        <!--formaction="/alunos/pesq?_method=GET"-->
+                        <div class="linha filtro-pesquisa">
+                            <input type="radio" name="rbpesq" id="rbra" value="Rbra" checked>
+                            <label for="rbra">RA</label>
+                            <input type="radio" id="rbnome" name="rbpesq" value="Rbnome">
+                            <label for="rbnome">Nome</label>
+                            <input type="radio" id="rbano" name="rbpesq" value="Rbanoserie">
+                            <label for="rbano">Ano/Série</label>
+                        </div>
+                    </div>
+                    <div class="tabela-resultado">
+                        <table id="tabela">
+                            <thead>
+                                <tr>
+                                    <th>RA</th>
+                                    <th>Aluno</th>
+                                    <th>Ano/Série</th>
+                                    <th>Turma</th>
+                                    <th>Estado</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let a of alunos){ %>
+                                    <tr>
+                                        <td>
+                                            <%= a.RA%>
+                                        </td>
+                                        <td>
+                                            <%= a.Nome%>
+                                        </td>
+                                        <td>
+                                            <%= a.AnoSerie%>
+                                        </td>
+                                        <td>
+                                            <%= a.Turma.toUpperCase()%>
+                                        </td>
+                                        <td>
+                                            <%= a.Estado==0? 'Normal' : 'Devendo' %>
+                                        </td>
+                                        <td> <a href="/historico/<%=a.Id_Aluno %>"> Selecionar</a></td>
+                                    </tr>
+                                    <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--div do style da tabela-->
+                </div>
+                <!--div do style do from-->
+            </form>
+        </div>
+    </main>
+    <script src="/script.js"></script>
+</body>
+
+</html>

@@ -107,6 +107,21 @@ const alter = async (exem, idprat, id) => {
     }
 };
 
+const alterEstado = async (exem, est) => {
+    try {
+       const result = await connection.execute(
+           'update exemplar set Emprestado=? where Id_Exemplar=?',
+           [ est, exem.Id_Exemplar]
+       );
+       //console.log("executou o sql do create em Aluno.js");
+       return result[0];
+   } catch (error) {
+       //console.log("executou o catch do create em Aluno.js");
+       return null;
+   }
+};
+
+
 const pesq = async (info) => {
     let sql = "select * from exem where Titulo=?";
     try {
@@ -132,6 +147,14 @@ const delByTituloId = async (id) => {
     }
 };
 
+const getDiponiveis= async () => {
+    try {
+        const result = await connection.execute("select * from exemplar WHERE Emprestado =0");
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
 
 module.exports = {
     getAll,
@@ -143,5 +166,7 @@ module.exports = {
     delAutorById,
     delAssuntoById,
     delByTituloId,
-    getByIdPrateleira
+    getByIdPrateleira,
+    alterEstado,
+    getDiponiveis
 };

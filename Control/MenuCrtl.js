@@ -2,7 +2,6 @@ const getAll = async (req, res) => {
     try {
       if(req.session.Acesso != undefined)
       {
-        console.log(req.session.Acesso);
         let login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
       return res.status(200).render('BMenu',{login});
       }

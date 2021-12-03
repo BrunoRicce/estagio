@@ -14,7 +14,7 @@ let login;
 const getAll = async (req, res) => {
   try {
     if (req.session.Acesso != undefined) {
-      login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
+      login = { Nome: req.session.Nome, Acesso: req.session.Acesso };
       list = await titu.getAll();
       laut = await aut.getAll();
       ledi = await edi.getAll();
@@ -54,8 +54,10 @@ async function merge(list) {//lista de tituloa
 async function merge2(list) {//lista de autores/assuntos do titulo
   let lista = [];
   for (let i = 0; i < list.length; i++) {
+
     let titulo = await titu.getById(list[i].Id_Titulo);
-    lista.push({ Id_Titulo: titulo[i].Id_Titulo, Id_Editora: titulo[i].Id_Editora, Titulo: titulo[i].Titulo, Ano_Publicacao: titulo[i].Ano_Publicacao, Qtd_total: titulo[i].Qtd_total, Qtd_Disponivel: titulo[i].Qtd_Disponivel });
+    console.log(titulo)
+    lista.push({ Id_Titulo: titulo[0].Id_Titulo, Id_Editora: titulo[0].Id_Editora, Titulo: titulo[0].Titulo, Ano_Publicacao: titulo[0].Ano_Publicacao, Qtd_total: titulo[0].Qtd_total, Qtd_Disponivel: titulo[0].Qtd_Disponivel });
   }
   return lista;//returna lista de titulos do autor/assunto
 }
@@ -97,11 +99,12 @@ const pesq = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    let titulo = await titu.getById(req.params.id);
-    titulo = await merge(titulo);
+    if (req.session.Acesso != undefined) {
+      let titulo = await titu.getById(req.params.id);
+      titulo = await merge(titulo);
 
-    //qtd_aux = Number(titulo[0].Qtd_total);
-    return res.status(200).render('BTitulo/BTituloALT', { list, laut, ledi, lasu, titulo, login });
+      return res.status(200).render('BTitulo/BTituloALT', { list, laut, ledi, lasu, titulo, login });
+    }
   } catch (error) {
     return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }

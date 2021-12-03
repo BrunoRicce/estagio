@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Títulos</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="">
+        <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
+        <div class="login">
+            <div class="profile-user">
+                <label class="" for="" class="loginLabel"><%=login.Nome%></label>
+                <label for=""><% if(login.Acesso==0) {%>Aluno<%}%><% if(login.Acesso==1) {%>Professor<%}%><% if(login.Acesso==2) {%>RSL<%}%><% if(login.Acesso==3) {%>Admin<%}%></label>
+            </div>
+            <div>
+
+            </div>
+            <div class="logout">
+                <a href="/logout/"><label for="" class="loginLabel">Sair</label></a>
+            </div>
+
+        </div>
+    </header>
+    <main class="container-painel">
+        <nav>
+            <label for="" class="barLabel">Menu</label>
+            <ul class="menu-lateral">
+                <% if(login.Acesso>1) {%>
+                <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
+                <li><a href="/professores/" class="barItem">Professores</a></li>
+                <li><a href="/titulos/" class="barItem">Títulos</a></li>
+                <li><a href="/exemplares/" class="barItem">Exemplar</a></li>
+                <li><a href="/editoras/" class="barItem">Editoras</a></li>
+                <li><a href="/autores/" class="barItem">Autores</a></li>
+                <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
+                <li><a href="/estantes/" class="barItem">Estantes</a></li>
+                <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <li><a href="/regemprestimo/" class="barItem">Registrar Emprestimo</a></li>
+                <li><a href="/regdevolucao/" class="barItem">Registrar Devolução</a></li>
+                <li><a href="/requisicoesvis/" class="barItem">Requisições Realizadas</a></li>
+                <%}%>
+                <% if(login.Acesso>0) {%>
+                <li><a href="/regrequisicoes/" class="barItem">Requisições dos Professores</a></li>
+                <%}%>
+                <% if(login.Acesso==0) {%>
+                <li><a href="/recaluno/" class="barItem">Requisições de Livros</a></li>
+                <%}%>
+                <li><a href="/pesqexemplares/" class="barItem">Pesquisar Exemplares</a></li>
+                <li><a href="/regcomentario/" class="barItem">Realizar Comentário</a></li>
+                <li><a href="/anacomentario/" class="barItem">Analisar Comentários</a></li>
+                <li><a href="/viscomentario/" class="barItem">Vizualizar Comentários</a></li>
+                <% if(login.Acesso>0) {%>
+                    <li><a href="/localizacoes/" class="barItem">Relatorio de Localização de Livros</a></li>
+                    <li><a href="/devolucoes/" class="barItem">Relatorio de Devoluções Atrasadas</a></li>
+                    <li><a href="/disponiveis/" class="barItem">Relatorio de Exemplares Disponiveis</a></li>
+                    <li><a href="/historico/" class="barItem">Relatorio de Histórico de Emprestimos</a></li>
+                    <li><a href="/melhorleitor/" class="barItem">Relatorio de Melhor Leitor Mensal</a></li>
+                    <li><a href="/livrosmaislidos/" class="barItem">Relatorio de Livros Mais Lidos</a></li>
+                <%}%>
+            </ul>
+        </nav>
+        <div class="divForm">
+        <form class="formPesq" name="FormPesq" id="formPesq" action="/melhorleitor/gerar" method="GET">
+            <h2 class="title-gerenciar">Melhor Leitor Mensal</h2>
+            <hr>
+            <div class="formu">
+                <!-- compo de pesquisa -->
+                <div class="linha">
+                    <button class="btPes">Gerar PDF</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </main>
+    <script src="/script.js"></script>
+</body>
+
+</html>

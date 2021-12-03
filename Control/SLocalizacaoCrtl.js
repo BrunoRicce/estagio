@@ -1,0 +1,211 @@
+const exm = require('../Model/Exemplar');
+const titu = require('../Model/Titulo');
+const est = require('../Model/Estante');
+
+const aut = require('../Model/Autor');
+const edi = require('../Model/Editora');
+const asu = require('../Model/Assunto');
+
+const fs = require("fs");
+const PDFDocument = require("pdfkit");
+const { Console } = require('console');
+
+
+let login;
+let list = null;
+let ltitu = null;
+let lest = null;
+let lprat = null;
+let lpratAll = null;
+let link = false;
+
+const getAll = async (req, res) => {
+    try {
+        if (req.session.Acesso != undefined) {
+            login = { Nome: req.session.Nome, Acesso: req.session.Acesso };
+            link = false;
+            list = await exm.getAll();//todos exemplares
+            ltitu = await titu.getAll();
+            lest = await est.getAll();
+            lprat = await est.getMaiorQtd();
+            lpratAll = await est.getQtd();
+
+
+            lpratAll = estPratAll(lest, lpratAll);//lista de estantes e All(prateleiras)
+            await inicializa();//Tem que ser nesta ordem, senão da chabu
+            lest = estprat(lest, lprat);//lista de estantes e Max(prateleiras)
+
+            return res.status(200).render('SLocalizacao/SLocalizacao', { link, login });
+        }
+        return res.status(200).render('login', { mensagem: '' });
+    }
+    catch (error) {
+        return res.status(500).render('errors/error', { error: ' ERROR 500, não foi possivel carregar exemplares' });
+    }
+};
+
+function estPratAll(list, list2)//merge de estante + prateleira
+{
+    let lista = [];
+    for (let i = 0; i < list.length; i++) {
+        for (let y = 0; y < list2.length; y++) {
+            if (list[i].Id_Estante == list2[y].Id_Estante) {
+                lista.push({ Id_Estante: list[i].Id_Estante, Id_Prateleira: list2[y].Id_Prateleira, Descricao: list[i].Descricao, Pos: list2[y].Descricao });
+            }
+        }
+    }
+    return lista;
+}
+
+async function inicializa() {
+    list = await exm.getAll();//todos exemplares
+    ltitu = await titu.getAll();
+    lest = await est.getAll();
+    let auti = await aut.getAutorTitulo(); //buscar autor do titulo
+    let asti = await asu.getAssuntoTitulo(); //buscar assunto do titulo
+    laut = await aut.getAll();
+    lasu = await asu.getAll();
+    list = await exmTituPrat(list, ltitu, lpratAll, auti, asti);
+}
+
+function estprat(list, list2) {
+    let lista = [];
+    for (let i = 0; i < list.length; i++) {
+        lista.push({ Id_Estante: list[i].Id_Estante, Descricao: list[i].Descricao, Qtd: '', Max: '' });
+        for (let y = 0; y < list2.length; y++) {
+            if (list[i].Id_Estante == list2[y].Id_Estante) {
+                lista[i].Qtd = list2[y].Descricao;
+            }
+        }
+    }
+    return lista;
+}
+
+async function exmTituPrat(exm, titu, prat, auti, asti) {
+    let lista = [];
+    for (let i = 0; i < exm.length; i++) {
+        lista.push({ Id_Exemplar: exm[i].Id_Exemplar, Id_Titulo: exm[i].Id_Titulo, Id_Prateleira: exm[i].Id_Prateleira, Ano_compra: exm[i].Ano_compra, Titulo: '', Autor: '', Assunto: '', Id_Estante: '', Estante: '', Pos: '', Emprestado: exm[i].Emprestado })
+        for (let y = 0; y < titu.length; y++)
+            if (titu[y].Id_Titulo == exm[i].Id_Titulo)
+                lista[i].Titulo = titu[y].Titulo;
+
+        for (let x = 0; x < prat.length; x++)
+            if (prat[x].Id_Prateleira == exm[i].Id_Prateleira) {
+                lista[i].Estante = prat[x].Descricao;
+                lista[i].Id_Estante = prat[x].Id_Estante;
+                lista[i].Pos = prat[x].Pos;
+            }
+
+
+        for (let z = 0; z < auti.length; z++)
+            if (auti[z].Id_Titulo == exm[i].Id_Titulo) {
+                let autor = await aut.getById(auti[z].Id_Autor)
+                lista[i].Autor = autor[0].Nome;
+            }
+
+
+        for (let a = 0; a < asti.length; a++)
+            if (asti[a].Id_Titulo == exm[i].Id_Titulo) {
+                let assunt = await asu.getById(asti[a].Id_Assunto);
+                lista[i].Assunto = assunt[0].Nome;
+            }
+    }
+    return lista;
+}
+
+const gerarPdf = async (req, res) => {
+    if (req.session.Acesso != undefined) {
+        let path = 'LocalizacaoLivros.pdf'
+        let doc = new PDFDocument({ margin: 50 });
+
+        generateHeader(doc);
+        generateTableRow(doc, 110, 'Tombo', 'Titulo', 'Autor', 'Assunto', 'Estante / Pos');
+        generateInvoiceTable(doc);
+        //generateFooter(doc);
+
+        doc.end();
+        doc.pipe(fs.createWriteStream(path));
+        link = true;
+        return res.status(200).render('SLocalizacao/SLocalizacaoLink', { link, login });
+    }
+}
+
+function generateHeader(doc) {
+    doc
+        .image("imgs/Logo.png", 50, 45, { width: 50 })
+        .fillColor("#444444")
+        .fontSize(20)
+        .text("E.E. Dom Bosco", 110, 57)
+        .fontSize(10)
+        .text(login.Nome, 200, 65, { align: "right" })
+        // .text("New York, NY, 10025", 200, 80, { align: "right" })
+        .moveDown();
+}
+
+function generateFooter(doc) {
+    doc
+        .fontSize(10)
+        .text(
+            "Payment is due within 15 days. Thank you for your business.",
+            50,
+            780,
+            { align: "center", width: 500 }
+        );
+}
+
+function generateTableRow(doc, y, c1, c2, c3, c4, c5) {
+    doc
+        .fontSize(10)
+        .text(c1, 50, y)
+        .text(c2, 150, y)
+        .text(c3, 280, y, { width: 90, align: "right" })
+        .text(c4, 370, y, { width: 90, align: "right" })
+        .text(c5, 0, y, { align: "right" });
+}
+
+function generateInvoiceTable(doc) {// a cada 20 itens add uma page
+    let i, invoiceTableTop = 110, rowcont = 0;
+    let position;
+
+    for (i = 0; i < list.length; i++) {
+        const item = list[i];
+        rowcont++;
+        if (rowcont < 20)
+            position = invoiceTableTop + (i + 1) * 30;
+        else {
+            rowcont = 0;
+            doc.addPage()
+            invoiceTableTop = 20
+        }
+        generateTableRow(
+            doc,
+            position,
+            item.Id_Exemplar,
+            item.Titulo,
+            item.Autor,
+            item.Assunto,
+            item.Estante + '/' + item.Pos
+        );
+    }
+    rowcont = 0;
+    doc.addPage()
+    invoiceTableTop = 20
+    for (i = 0; i < list.length; i++) {
+        const item = list[i];
+        position = invoiceTableTop + (i + 1) * 30;
+        generateTableRow(
+            doc,
+            position,
+            item.Id_Exemplar,
+            item.Titulo,
+            item.Autor,
+            item.Assunto,
+            item.Estante + '/' + item.Pos
+        );
+    }
+}
+
+module.exports = {
+    getAll,
+    gerarPdf
+};

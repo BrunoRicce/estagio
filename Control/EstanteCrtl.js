@@ -53,17 +53,19 @@ const create = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    const estante = await est.getById(req.params.id);
-    const qtd = await est.getByIdQtd(req.params.id);
-    let pratmin = await est.getMinPrat();
-    let min = [];
+    if (req.session.Acesso != undefined) {
+      const estante = await est.getById(req.params.id);
+      const qtd = await est.getByIdQtd(req.params.id);
+      let pratmin = await est.getMinPrat();
+      let min = [];
 
-    for (let i = 0; i < pratmin.length; i++)
-      if (pratmin[i].Id_Estante == estante[0].Id_Estante)
-        min = pratmin[i];
+      for (let i = 0; i < pratmin.length; i++)
+        if (pratmin[i].Id_Estante == estante[0].Id_Estante)
+          min = pratmin[i];
 
-    qtd_aux = Number(qtd[0].Descricao);//qtd maxima de prateleiras da estante
-    return res.status(200).render('BEstante/BEstanteALT', { estante, qtd, list, excluir: min.length, min, login });
+      qtd_aux = Number(qtd[0].Descricao);//qtd maxima de prateleiras da estante
+      return res.status(200).render('BEstante/BEstanteALT', { estante, qtd, list, excluir: min.length, min, login });
+    }
   } catch (error) {
     return res.status(500).render('errors/error', { error: 'ERROR 404' });
   }

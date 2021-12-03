@@ -5,7 +5,7 @@ let login;
 const getAll = async (req, res) => {
   try {
     if (req.session.Acesso != undefined) {
-      login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
+      login = { Nome: req.session.Nome, Acesso: req.session.Acesso };
       list = await aut.getAll();
       return res.status(200).render('BAutor/BAutor', { list, login });
     }
@@ -32,13 +32,14 @@ const create = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    let excluir = null;
-    const autor = await aut.getById(req.params.id);
-    console.log(autor[0].Id_Autor);
-    excluir = await aut.getByIdAutorTitulo(autor[0].Id_Autor);
-    console.log(excluir.length);
-    return res.status(200).render('BAutor/BAutorALT', { autor, list, excluir: excluir.length, login });
-
+    if (req.session.Acesso != undefined) {
+      let excluir = null;
+      const autor = await aut.getById(req.params.id);
+      console.log(autor[0].Id_Autor);
+      excluir = await aut.getByIdAutorTitulo(autor[0].Id_Autor);
+      console.log(excluir.length);
+      return res.status(200).render('BAutor/BAutorALT', { autor, list, excluir: excluir.length, login });
+    }
   } catch (error) {
     return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }

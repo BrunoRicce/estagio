@@ -49,6 +49,17 @@ const getByIdAssuntoTitulo = async (id) => {
     }
 };
 
+const getAssuntoTitulo = async () => {
+    try {
+        const result = await connection.execute(
+            "select * from assunto_do_titulo"
+        );
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
 const alter = async (asu, id) => {
     try {
         const result = await connection.execute(
@@ -93,5 +104,6 @@ module.exports = {
     delById,
     alter,
     getAll,
-    getByIdAssuntoTitulo
+    getByIdAssuntoTitulo,
+    getAssuntoTitulo
 };

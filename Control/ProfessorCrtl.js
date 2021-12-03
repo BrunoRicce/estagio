@@ -7,7 +7,7 @@ const getAll = async (req, res) => {
   try {
     if (req.session.Acesso != undefined) {
       list = await prof.getAll();
-      login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
+      login = { Nome: req.session.Nome, Acesso: req.session.Acesso };
       return res.status(200).render('BProfessor/BProfessor', { list, login });
     }
     return res.status(200).render('login', { mensagem: '' });
@@ -42,8 +42,10 @@ const pesq = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    let professor = await prof.getById(req.params.id);
-    return res.status(200).render('BProfessor/BProfessorALT', { professor, list, login });
+    if (req.session.Acesso != undefined) {
+      let professor = await prof.getById(req.params.id);
+      return res.status(200).render('BProfessor/BProfessorALT', { professor, list, login });
+    }
   } catch (error) {
     return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }

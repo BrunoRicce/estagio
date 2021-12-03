@@ -201,7 +201,7 @@ CREATE TABLE `Comentario` (
     `Visivel` INT,
     `Aprovado` INT,
     `Observacao` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
-    `Comentário` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+    `Comentario` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
 	`Dt_Publicacao` DATETIME NULL DEFAULT NULL,
     `Dt_Revisao` DATETIME NULL DEFAULT NULL,
     

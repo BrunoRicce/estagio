@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Aluno</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="script.js"></script>
+    <script src="Aluno.js"></script> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="">
+        <img src="/Logo.png" alt="Logo Dom Bosco" class="logo_img">
+        <div class="login">
+            <div class="profile-user">
+                <label class="" for="" class="loginLabel"><%=login.Nome%></label>
+                <label for=""><% if(login.Acesso==0) {%>Aluno<%}%><% if(login.Acesso==1) {%>Professor<%}%><% if(login.Acesso==2) {%>RSL<%}%><% if(login.Acesso==3) {%>Admin<%}%></label>
+            </div>
+            <div>
+            </div>
+            <div class="logout">
+                <a href="/logout/"><label for="" class="loginLabel">Sair</label></a>
+            </div>
+        </div>
+    </header>
+    <main class="container-painel">
+        <nav>
+            <label for="" class="barLabel">Menu</label>
+            <ul class="menu-lateral">
+                <% if(login.Acesso>1) {%>
+                <li><a href="/alunos/" class="barItem" for="Alunos">Alunos</a></li>
+                <li><a href="/professores/" class="barItem">Professores</a></li>
+                <li><a href="/titulos/" class="barItem">Títulos</a></li>
+                <li><a href="/exemplares/" class="barItem">Exemplar</a></li>
+                <li><a href="/editoras/" class="barItem">Editoras</a></li>
+                <li><a href="/autores/" class="barItem">Autores</a></li>
+                <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
+                <li><a href="/estantes/" class="barItem">Estantes</a></li>
+                <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <li><a href="/regemprestimo/" class="barItem">Registrar Emprestimo</a></li>
+                <li><a href="/regdevolucao/" class="barItem">Registrar Devolução</a></li>
+                <li><a href="/requisicoesvis/" class="barItem">Requisições Realizadas</a></li>
+                <%}%>
+                <% if(login.Acesso>0) {%>
+                <li><a href="/regrequisicoes/" class="barItem">Requisições dos Professores</a></li>
+                <%}%>
+                <% if(login.Acesso==0) {%>
+                <li><a href="/recaluno/" class="barItem">Requisições de Livros</a></li>
+                <%}%>
+                <li><a href="/pesqexemplares/" class="barItem">Pesquisar Exemplares</a></li>
+                <li><a href="/regcomentario/" class="barItem">Realizar Comentário</a></li>
+                <li><a href="/anacomentario/" class="barItem">Analisar Comentários</a></li>
+                <li><a href="/viscomentario/" class="barItem">Vizualizar Comentários</a></li>
+                <% if(login.Acesso>0) {%>
+                    <li><a href="/localizacoes/" class="barItem">Relatorio de Localização de Livros</a></li>
+                    <li><a href="/devolucoes/" class="barItem">Relatorio de Devoluções Atrasadas</a></li>
+                    <li><a href="/disponiveis/" class="barItem">Relatorio de Exemplares Disponiveis</a></li>
+                    <li><a href="/historico/" class="barItem">Relatorio de Histórico de Emprestimos</a></li>
+                    <li><a href="/melhorleitor/" class="barItem">Relatorio de Melhor Leitor Mensal</a></li>
+                    <li><a href="/livrosmaislidos/" class="barItem">Relatorio de Livros Mais Lidos</a></li>
+                <%}%>
+            </ul>
+        </nav>
+        <div class="divForm">
+            <!-- Dados do aluno -->
+            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action=""
+                method="POST" novalidate>
+                <h1 class="title-gerenciar">Dados do aluno</h1>
+                <hr>
+                <!-- Dados de preenchimento -->
+                <div class="formu">
+                    <div class="linha">
+                        <div class="fmnome">
+                            <label for="" id="baNome" color="red">Nome:</label>
+                            <input type="text" placeholder="Nome" id="nome" name="Nome" maxlength="20" class="gd"
+                                value="<%=aluno[0].Nome %>" readonly style="color:grey">
+                        </div>
+                        <div class="fmano/serie">
+                            <label for="" id="baAnoserie"> Ano/Série:</label>
+                            <input type="text" placeholder="RA" id="anoserie" name="Anoserie"
+                                value="<%=aluno[0].AnoSerie %>°<%=aluno[0].Turma.toUpperCase()%>" readonly style="color:grey">
+                        </div>
+                        <div class="fmra">
+                            <label id="baRa">RA:</label>
+                            <input type="text" placeholder="RA" id="ra" name="RA" min="0" minlength="12" maxlength="20"
+                                value="<%=Number(aluno[0].RA); %>" readonly style="color:grey">
+                        </div>
+                        <div class="fmestado">
+                            <label id="baSenha">Estado:</label>
+                            <input type="text" placeholder="Estado" id="estado" name="Estado"
+                                value="<%=aluno[0].Estado==0? 'Normal' : 'Devendo' %>" readonly <% if(aluno[0].Estado==0) {%> style="color:grey" <%}else{%> style="color:red" <%}%>>
+                        </div>
+                    </div>
+                    <div class="linha">
+                        <div class="fmendereco">
+                            <label for="">Endereço:</label>
+                            <input type="text" placeholder="Endereço" id="endereco" name="Endereco" class="gd"
+                                value="<%=aluno[0].Endereco %>" readonly style="color:grey">
+                        </div>
+                        <div class="fmtelefone">
+                            <label for="">Telefone:</label>
+                            <input type="text" placeholder="Telefone" id="telefone" name="Telefone" maxlength="20"
+                                value="<%=aluno[0].Telefone %>" readonly style="color:grey">
+                        </div>
+                        <div class="fmemail">
+                            <label for="">E-mail:</label>
+                            <input type="email" placeholder="E-mail" id="email" name="Email" class="gd"
+                                value=" <%=aluno[0].Email %>" readonly style="color:grey">
+                        </div>
+                    </div>
+                    <div class="fmid">
+                        <input type="hidden" id="id" name="ID" value="<%=aluno[0].Id_Aluno%>" readonly>
+                    </div>
+                </div>
+            </form>
+            <!-- Emprestimos do aluno -->
+            <form class="formPesq" name="formPesq" id="formEmp" action="" method="GET">
+                <h2 class="title-gerenciar">Emprestimos do Aluno</h2>
+                <hr>
+                <div class="formu">
+                    <div class="tabela-resultado">
+                        <table id="tabela">
+                            <thead>
+                                <tr>
+                                    <th>Tombo</th>
+                                    <th>Titulo</th>
+                                    <th>DT Emprestimo</th>
+                                    <th>DT Devolução</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let a of exe_emp){ %>
+                                    <tr>
+                                        <td>
+                                            <%= a.Id_Exemplar%>
+                                        </td>
+                                        <td>
+                                            <%= a.Titulo%>
+                                        </td>
+                                        <td>
+                                            <%= a.Dt_Emprestimo%>
+                                        </td>
+                                        <td>
+                                            <%= a.Dt_Encerramento%>
+                                        </td>
+                                        <td>
+                                            <%= a.Atrasado==true? 'Atrasado' : 'Emprestado' %>
+                                        </td>
+                                    </tr>
+                                    <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--div do style da tabela-->
+                </div>
+                <!--div do style do from-->
+            </form>
+            <!-- Selecionar Exemplar -->
+            <form class="formPesq" name="FormPesqEx" id="formPesqex" action="/regemprestimo/pesqex" method="GET">
+                <h2 class="title-gerenciar">Selecionar Exemplar</h2>
+                <hr>
+                <div class="formu">
+                    <!-- compo de pesquisa -->
+                    <div class="linha">
+                        <div class="fmpesqui">
+                            <label for="">Pesquisar Exemplar</label>
+                            <input type="text" placeholder="Pesquisar" id="nome" name="Pesq" class="gd"
+                                titulo>
+                        </div>
+                        <button class="btPes">Pesquisar</button>
+                        <div class="linha filtro-pesquisa">
+                            <input type="radio" name="rbpesq" id="rbtitulo" value="Rbtitulo" checked>
+                            <label for="rbtitulo">Título</label>
+                            <input type="radio" name="rbpesq" id="rbtombo" value="Rbtombo">
+                            <label for="rbtombo">Tombo</label>
+                            <input type="radio" name="rbpesq" id="rbautor" value="Rbautor">
+                            <label for="rbautor">Autor</label>
+                            <input type="radio" name="rbpesq" id="rbassunto" value="Rbassunto">
+                            <label for="rbassunto">Assunto</label>
+                            <% if(login.Acesso>1) {%>
+                            <input type="radio" name="rbpesq" id="rbestan" value="Rbestan">
+                            <label for="rbestan">Estante</label>
+                            <%}%>
+                        </div>
+                    </div>
+                    <!-- tabela -->
+                    <div class="tabela-resultado">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tombo</th>
+                                    <th>Título</th>
+                                    <th>Autor</th>
+                                    <th>Assunto</th>
+                                    <% if(login.Acesso>1) {%>
+                                    <th>Estante/Prateleira</th>
+                                    <%}%>
+                                    <th>Estado</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let a of lexem){ %>
+                                    <% if (a.Emprestado==0){ %>
+                                    <tr>
+                                        <td>
+                                            <%= a.Id_Exemplar%>
+                                        </td>
+                                        <td>
+                                            <%= a.Titulo%>
+                                        </td>
+                                        <td>
+                                            <%= a.Autor%>
+                                        </td>
+                                        <td>
+                                            <%= a.Assunto%>
+                                        </td>
+                                        <td>
+                                            <%= a.Estante%> / <%= a.Pos%>
+                                        </td>
+                                        <td>
+                                            <%= a.Emprestado==0? 'Disponível' : 'Emprestado' %>
+                                        </td>
+                                        <td> <a href="/regemprestimo/exemplares/<%= a.Id_Exemplar%>"> Selecionar</a></td>
+                                    </tr>
+                                    <%}%>
+                                <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            <!-- Exemplares Selecionados -->
+            <form class="formPesq" name="FormPesqEx" id="formPesqex" action="/regemprestimo/"  method="post" novalidate>
+                <h2 class="title-gerenciar">Exemplares Selecionados</h2>
+                <hr>
+                <div class="formu">
+                    <!-- tabela -->
+                    <div class="tabela-resultado">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tombo</th>
+                                    <th>Título</th>
+                                    <th>Autor</th>
+                                    <th>Assunto</th>
+                                    <% if(login.Acesso>1) {%>
+                                    <th>Estante/Prateleira</th>
+                                    <%}%>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let a of exeSelec){ %>
+                                    <% if (a.Emprestado==0){ %>
+                                    <tr>
+                                        <td>
+                                            <%= a.Id_Exemplar%>
+                                        </td>
+                                        <td>
+                                            <%= a.Titulo%>
+                                        </td>
+                                        <td>
+                                            <%= a.Autor%>
+                                        </td>
+                                        <td>
+                                            <%= a.Assunto%>
+                                        </td>
+                                        <td>
+                                            <%= a.Estante%> / <%= a.Pos%>
+                                        </td>
+                                        <td> <a href="/regemprestimo/delexemplares/<%= a.Id_Exemplar%>">Remover</a></td>
+                                    </tr>
+                                    <%}%>
+                                <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            <form class="formInfo" name="FormCad" id="formCad" autocomplete="off" action="/livrosmaislidos/"
+                method="POST" novalidate>
+                <h1 class="title-gerenciar">Data do Emprestimo</h1>
+                <hr>
+                <!-- Dados de preenchimento -->
+                <div class="formu">
+                    <div class="linha">
+                        <div class="fmra">
+                            <label>Data do Emprestimo:</label>
+                            <input type="date" id="dtatu" name="dtAtu" value="<%=hoje; %>" readonly>
+                        </div>
+                        <div class="fmra">
+                            <label>Data de Devolução:<%=erro; %></label>
+                            <input type="date"  id="dtdevu" name="dtDevu"  value="<%=hoje; %>" min='<%=hoje; %>'required>
+                        </div>
+                    </div>
+                    
+                    <div class="linha botoes">
+                        <button class="btCon" onclick="return window.mySubmitFunction('','')">Confirmar</button>
+                        <button formaction="/regemprestimo/?_method=GET" class="btAlt">Cancelar</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="/script.js"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@ let login;
 const getAll = async (req, res) => {
   try {
     if (req.session.Acesso != undefined) {
-      login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
+      login = { Nome: req.session.Nome, Acesso: req.session.Acesso };
       list = await edi.getAll();
       return res.status(200).render('BEditora/BEditora', { list, login });
     }
@@ -34,8 +34,10 @@ const create = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    const editora = await edi.getById(req.params.id);
-    return res.status(200).render('BEditora/BEditoraALT', { editora, list, login });
+    if (req.session.Acesso != undefined) {
+      const editora = await edi.getById(req.params.id);
+      return res.status(200).render('BEditora/BEditoraALT', { editora, list, login });
+    }
   } catch (error) {
     return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }

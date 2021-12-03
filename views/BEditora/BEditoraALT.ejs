@@ -24,7 +24,7 @@
 
             </div>
             <div class="logout">
-                <label for="" class="loginLabel">Sair</label>
+                <a href="/logout/"><label for="" class="loginLabel">Sair</label></a>
             </div>
 
         </div>
@@ -43,6 +43,27 @@
                 <li><a href="/assuntos/" class="barItem">Assuntos</a></li>
                 <li><a href="/estantes/" class="barItem">Estantes</a></li>
                 <li><a href="/anoseries/" class="barItem">Ano/Série</a></li>
+                <li><a href="/regemprestimo/" class="barItem">Registrar Emprestimo</a></li>
+                <li><a href="/regdevolucao/" class="barItem">Registrar Devolução</a></li>
+                <li><a href="/requisicoesvis/" class="barItem">Requisições Realizadas</a></li>
+                <%}%>
+                <% if(login.Acesso>0) {%>
+                <li><a href="/regrequisicoes/" class="barItem">Requisições dos Professores</a></li>
+                <%}%>
+                <% if(login.Acesso==0) {%>
+                <li><a href="/recaluno/" class="barItem">Requisições de Livros</a></li>
+                <%}%>
+                <li><a href="/pesqexemplares/" class="barItem">Pesquisar Exemplares</a></li>
+                <li><a href="/regcomentario/" class="barItem">Realizar Comentário</a></li>
+                <li><a href="/anacomentario/" class="barItem">Analisar Comentários</a></li>
+                <li><a href="/viscomentario/" class="barItem">Vizualizar Comentários</a></li>
+                <% if(login.Acesso>0) {%>
+                    <li><a href="/localizacoes/" class="barItem">Relatorio de Localização de Livros</a></li>
+                    <li><a href="/devolucoes/" class="barItem">Relatorio de Devoluções Atrasadas</a></li>
+                    <li><a href="/disponiveis/" class="barItem">Relatorio de Exemplares Disponiveis</a></li>
+                    <li><a href="/historico/" class="barItem">Relatorio de Histórico de Emprestimos</a></li>
+                    <li><a href="/melhorleitor/" class="barItem">Relatorio de Melhor Leitor Mensal</a></li>
+                    <li><a href="/livrosmaislidos/" class="barItem">Relatorio de Livros Mais Lidos</a></li>
                 <%}%>
             </ul>
         </nav>
@@ -84,7 +105,7 @@
                         <label for="rbnome">Nome</label>
                     </div>
                 </div>
-                <div style="overflow: auto; width: 1500px; height: 200px; align-content: center;">
+                <div class="tabela-resultado">
                     <table id="tabela">
                         <thead>
                             <tr>
@@ -102,7 +123,7 @@
                                     <td>
                                         <%= a.Nome%>
                                     </td>
-                                    <td> <a href="/alunos/<%=a.Id_Editora %>"> Editar/Ecluir</a></td>
+                                    <td> <a href="/alunos/<%=a.Id_Editora %>"> Editar/Excluir</a></td>
                                 </tr>
                                 <%}%>
                         </tbody>

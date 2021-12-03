@@ -7,15 +7,14 @@ let login = null
 const getAll = async (req, res) => {
   try {
     if (req.session.Acesso != undefined) {
-      login = {Nome:req.session.Nome, Acesso: req.session.Acesso};
+      login = { Nome: req.session.Nome, Acesso: req.session.Acesso };
       list = await getAnoSerie();//lista de anoserie e turma com merge
       alunos = await alu.getAll();
       alunos = mergeAluAS(alunos, list);
-      console.log('----------')
-      console.log(req.session);
+
       return res.status(200).render('BAluno/BAlunoINS', { alunos, list, login });
     }
-    return res.status(200).render('login',{mensagem:''});
+    return res.status(200).render('login', { mensagem: '' });
   }
   catch (error) {
     return res.status(500).render('errors/error', { error: ' ERROR 500' });
@@ -71,9 +70,11 @@ const delById = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    let aluno = await alu.getById(req.params.id);
-    aluno = mergeAluAS(aluno, list);
-    return res.status(200).render('BAluno/BAlunoALT', { aluno, alunos, list, login });
+    if (req.session.Acesso != undefined) {
+      let aluno = await alu.getById(req.params.id);
+      aluno = mergeAluAS(aluno, list);
+      return res.status(200).render('BAluno/BAlunoALT', { aluno, alunos, list, login });
+    }
   } catch (error) {
     return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }

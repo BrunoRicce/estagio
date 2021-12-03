@@ -13,6 +13,25 @@ const MenuRouter = require('./routers/MenuRouter');
 const TituloRouter = require('./routers/TituloRouter');
 const ExemplarRouter = require('./routers/ExemplarRouter');
 const LoginRouter = require('./routers/LoginRouter');
+const LogoutRouter = require('./routers/LogoutRouter');
+const PExemplarRouter = require('./routers/PExemplares');
+const REmprestimoRouter = require('./routers/REmprestimoRouter');
+const RDevolucaoRouter = require('./routers/RDevolucaoRouter');
+const RProfessoresRouter = require('./routers/RProfessoresRouter');
+const FRAlunoRouter = require('./routers/FRAlunoRouter');
+const FRProfessoresVisRouter = require('./routers/FRProfessoresVisRouter');
+const FRComentarioRouter = require('./routers/FRComentarioRouter');
+const FAComentarioRouter = require('./routers/FAComentarioRouter');
+const FAComentarioVisRouter = require('./routers/FAComentarioVisRouter');
+const SLocalizacaoRouter = require('./routers/SLocalizacaoRouter');
+const SDevolucaoRouter = require('./routers/SDevolucaoRouter');
+const SDisponivelRouter = require('./routers/SDisponivelRouter');
+const SHistoricoRouter = require('./routers/SHistoricoRouter');
+const SLeitorRouter = require('./routers/SLeitorRouter');
+const SLivrosLidosRouter = require('./routers/SLivrosLidosRouter');
+
+
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }))
@@ -41,14 +60,9 @@ app.use(session(sessionOP))
 //flash na aula 482
 app.set("view engine", "ejs")
 app.use('views', express.static(path.join(__dirname, "/views")))
-//express session ou jwt
-// app.use("/login", (req, res) => {
-//     const {username = "adm"} = req.query;
-//     req.session.username = username;
-//     console.log(req.session);
-//     res.render('Login');
-// });
+
 app.use('/login', LoginRouter);
+app.use('/logout', LogoutRouter);
 app.use('/autores', AutorRouter);
 app.use('/alunos', AlunoRouter);
 app.use('/anoseries', AnoserieRouter);
@@ -59,8 +73,22 @@ app.use('/professores', ProfessorRouter);
 app.use('/Menu', MenuRouter);
 app.use('/titulos', TituloRouter);
 app.use('/exemplares', ExemplarRouter);
+app.use('/pesqexemplares', PExemplarRouter);
+app.use('/regemprestimo', REmprestimoRouter);
+app.use('/regdevolucao', RDevolucaoRouter);
+app.use('/regrequisicoes', RProfessoresRouter);
+app.use('/recaluno', FRAlunoRouter);
+app.use('/requisicoesvis', FRProfessoresVisRouter);
+app.use('/regcomentario', FRComentarioRouter);
+app.use('/anacomentario', FAComentarioRouter);
+app.use('/viscomentario', FAComentarioVisRouter);
+app.use('/localizacoes', SLocalizacaoRouter);
+app.use('/devolucoes', SDevolucaoRouter);
+app.use('/disponiveis', SDisponivelRouter);
+app.use('/historico', SHistoricoRouter);
+app.use('/melhorleitor', SLeitorRouter);
+app.use('/livrosmaislidos', SLivrosLidosRouter);
 
 app.listen(3000, () => {
     console.log("Express server na porta 3000");
 });
-

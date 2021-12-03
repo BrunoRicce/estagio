@@ -43,6 +43,18 @@ const getById = async (id) => {
     }
 };
 
+const getAnoSerieTurmaById = async (id) => {
+    try {
+        const result = await connection.execute(
+            "SELECT * FROM anoserie INNER JOIN turma ON anoserie.Id_Turma = turma.Id_Turma Where Id_AnoSerie = ?",
+            [id]
+        );
+        return result[0];
+    } catch (error) {
+        return null;
+    }
+};
+
 const getByIdTurma = async (id) => {
     try {
         const result = await connection.execute(
@@ -86,5 +98,6 @@ module.exports = {
     getById,
     getByIdTurma,
     delById,
-    alter
+    alter,
+    getAnoSerieTurmaById
 };

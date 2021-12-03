@@ -12,10 +12,26 @@ body{
     object-fit: cover; */
 } 
 
+h1{
+    margin-block-start: 0px !important;
+}
+
+header{
+    margin: 0 auto 0 auto;
+    padding: 0 0.938em 0 0.938em;
+    max-width: 1140px;
+    margin-bottom: 25px;
+}
+
 /* TELA DE ALUNOS */
 .container-painel{
     display: flex;
     padding: 25px;
+    margin: 0 auto 0 auto;
+    padding: 0 0.938em 0 0.938em;
+    /* max-width: 1903px; */
+    max-width: 1140px;
+    width: 100%;
 }
 nav{
     border: none;
@@ -29,7 +45,7 @@ nav{
 }
 form{
     border: none;
-    width: 600px;
+    width: calc(100% - 25px);
     height: 300px;
     flex: auto;
     background-color: #FAFAFA;
@@ -160,11 +176,14 @@ li:hover{
 }
 
 .formInfo{
-    width: 1600px;
-    height: 400px;
+    /* width: 1600px; */
+    /* height: 400px; */
+    /* height: calc(100% - 85px); */
+    height: auto;
+    padding-bottom: 1px;
 }
 .formPesq{
-    width: 1600px;
+    /* width: 100%; */
     height: 410px;
 }
 
@@ -210,9 +229,9 @@ button{
     padding: 10px;
     border-radius: .3em;
     color: white;
-    margin: 20px 10px 10px;
-    
+    margin: 20px 10px 10px; 
 }
+
 button:hover{
     filter: brightness(95%);
     cursor: pointer;
@@ -227,7 +246,7 @@ background-color: #E45E08;
     background-color: #B6051A;
 }
 .divForm{
-    width: 1200px;
+    width: 82%;
     height: 600px;
 }
 /* ------------------Tabela---------------- */
@@ -265,6 +284,13 @@ input[type="radio"]{
 
 .filtro-pesquisa{
     padding-top: 32px;
+}
+
+.tabela-resultado{
+    overflow: auto; 
+    width: 100%; 
+    height: 200px; 
+    align-content: center;
 }
 
 
@@ -317,6 +343,7 @@ label[for*="rb"]{
     cursor: pointer;
 }
 label, a{
-    font-size: 1.5vmin;
+    /* font-size: 1.5vmin; */
+    font-size: 14px;
     font-weight: 500%;
 }

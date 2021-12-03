@@ -34,9 +34,11 @@ const create = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    const assunto = await asu.getById(req.params.id);
-    let excluir = await asu.getByIdAssuntoTitulo(assunto[0].Id_Assunto);
-    return res.status(200).render('BAssunto/BAssuntoALT', { assunto, list, excluir: excluir.length, login });
+    if (req.session.Acesso != undefined) {
+      const assunto = await asu.getById(req.params.id);
+      let excluir = await asu.getByIdAssuntoTitulo(assunto[0].Id_Assunto);
+      return res.status(200).render('BAssunto/BAssuntoALT', { assunto, list, excluir: excluir.length, login });
+    }
   } catch (error) {
     return res.status(500).render('errors/error', { error: ' ERROR 500' });
   }
