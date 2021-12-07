@@ -5,9 +5,11 @@ no login do aluno, da pra acessar o que ele não deve so colocando a url
 o if (req.session.Acesso != undefined) tem que ir en toda função que tem render
 colocar o menu do menu nas views
 textarea do registrar/analizar/vizualizar comentário ta giga
--
 o pesq do analizar comentário e do vizualizar não foram implementados
-não consigo exibir ou baixar pdf
 alterar /login do server e das views pra /
-
 tentando hospedar na aws
+-
+Aluno que fez comentário não pode ser excluido
+mensagem de ano serie ja cadastrado não aparece pro usuario
+Analizar comentário no aluno? alterar todos os menus
+os titulos dao erro 500, seria por causa dos comentários?

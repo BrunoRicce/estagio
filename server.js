@@ -31,7 +31,6 @@ const SLeitorRouter = require('./routers/SLeitorRouter');
 const SLivrosLidosRouter = require('./routers/SLivrosLidosRouter');
 
 
-
 const app = express();
 
 app.use(express.urlencoded({ extended: true }))
@@ -89,6 +88,7 @@ app.use('/historico', SHistoricoRouter);
 app.use('/melhorleitor', SLeitorRouter);
 app.use('/livrosmaislidos', SLivrosLidosRouter);
 
-app.listen(3000, () => {
-    console.log("Express server na porta 3000");
+app.listen(80, () => {
+    console.log("Express server na porta 80");
 });
+

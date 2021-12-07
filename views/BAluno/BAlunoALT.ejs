@@ -50,13 +50,13 @@
                 <%}%>
                 <% if(login.Acesso>0) {%>
                 <li><a href="/regrequisicoes/" class="barItem">Requisições dos Professores</a></li>
+                <li><a href="/anacomentario/" class="barItem">Analisar Comentários</a></li>
                 <%}%>
                 <% if(login.Acesso==0) {%>
                 <li><a href="/recaluno/" class="barItem">Requisições de Livros</a></li>
                 <%}%>
                 <li><a href="/pesqexemplares/" class="barItem">Pesquisar Exemplares</a></li>
                 <li><a href="/regcomentario/" class="barItem">Realizar Comentário</a></li>
-                <li><a href="/anacomentario/" class="barItem">Analisar Comentários</a></li>
                 <li><a href="/viscomentario/" class="barItem">Vizualizar Comentários</a></li>
                 <% if(login.Acesso>0) {%>
                     <li><a href="/localizacoes/" class="barItem">Relatorio de Localização de Livros</a></li>
